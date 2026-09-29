@@ -1,0 +1,19 @@
+:root {
+    --primario: #5f9ea0;
+    --secundario: #afeeee;
+    --gris: #f5f5f7;
+    --azul: #0071e3;
+    --blanco: #ffffff;
+    --gris-oscuro: #dbdbdb;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    color: var(--primario);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 3rem;
+    text-align: center;
+}
