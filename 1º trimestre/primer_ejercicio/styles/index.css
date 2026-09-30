@@ -106,6 +106,7 @@ main {
   border: none;
   color: var(--blanco);
   background-color: var(--azul);
+  cursor: pointer;
 }
 
 footer {
@@ -182,3 +183,26 @@ footer p {
   }
 }
 
+.article1.color1 {
+  background-color: #ffe7c3;
+}
+
+.article2.color2 {
+  background-color: #ffd1c3;
+}
+
+.article3.color3 {
+  background-color: #ffc3c3;
+}
+
+.article4.color4 {
+  background-color: #ffc3ff;
+}
+
+.article5.color5 {
+  background-color: #e7c3ff;
+}
+
+.article6.color6 {
+  background-color: #c3dfff;
+}
