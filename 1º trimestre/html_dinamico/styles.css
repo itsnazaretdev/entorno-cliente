@@ -1,0 +1,34 @@
+
+.contenedor {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.tarjeta {
+    position: relative;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    border-radius: 10px;
+    background-color: #f2f2f2;
+    padding: 1rem;
+}
+
+.precioIva {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -30px;
+    right: -10px;
+    width: 4rem;
+    height: 2rem;
+    background-color: rgb(255, 255, 184);
+}
