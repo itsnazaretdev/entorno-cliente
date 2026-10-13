@@ -109,3 +109,35 @@ const categorias = [
 categorias.forEach((categoria) =>
   console.log(categoria.marca.toLowerCase().includes("hp")),
 );
+
+//----------------DOM---------------------------
+const sumar = document.querySelector('.btn-sum')
+const restar = document.querySelector('.btn-res')
+const resultado = document.querySelector('.num')
+const div = document.querySelector('.contenedorDiv')
+const p = document.createElement('p')
+
+let contador = 0
+
+sumar.addEventListener('click', () => {
+    contador++;
+    renderizar()
+    if (contador > 0) {
+        p.innerHTML = ""
+    }
+})
+
+restar.addEventListener('click', () => {
+    contador--;
+    if (contador < 0) {
+        p.innerHTML = "No puede bajar de 0"
+        div.appendChild(p)
+        contador = 0
+    }
+    renderizar()
+    
+})
+
+function renderizar() {
+    resultado.textContent = contador
+}
