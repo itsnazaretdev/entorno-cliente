@@ -63,7 +63,9 @@ productos.forEach(({ id, nombre, categoria, precio, disponible }) => {
 filtro.addEventListener("click", () => {
   contenedor.innerHTML = "";
 
-  const productosFiltrados = productos.filter(producto => producto.categoria === "Libros");
+  const productosFiltrados = productos.filter(
+    (producto) => producto.categoria === "Libros",
+  );
 
   productosFiltrados.forEach(({ nombre, categoria, precio, disponible }) => {
     const tarjeta = document.createElement("div");
@@ -171,11 +173,103 @@ const datos = [
   { nombre: "paco", precio: 5 },
   { nombre: "mangel", precio: 15 },
   { nombre: "mangel", precio: 25 },
-
 ];
 
-const filtro2 = numeros2.filter(numero => numero > 10)
-console.log(filtro2)
+const filtro2 = numeros2.filter((numero) => numero > 10);
+console.log(filtro2);
 
-const filtroPrecio = datos.filter(({precio}) => precio > 10)
-filtroPrecio.forEach(objeto => console.log(objeto))
+const filtroPrecio = datos.filter(({ precio }) => precio > 10);
+filtroPrecio.forEach((objeto) => console.log(objeto));
+
+datos.push({ nombre: "raqueta", precio: 30 });
+datos.push(30);
+datos.shift();
+datos.unshift({ nombre: "pelota", precio: 20 });
+const filtroNombre = datos.filter(({ precio }) => precio === 4);
+
+console.log(filtroNombre);
+
+const variado = [
+  { nombre: "manzana", precio: 10 },
+  { nombre: "pera", precio: 20 },
+];
+
+const sumaObj = productos.reduce((acumulador, {precio: dinero}) => acumulador + dinero, 0)
+console.log(variado);
+
+//----------------DOM-------------------------
+const precios = [20, 40, 10, 100, 120]
+let orden = "original"
+const lista = document.querySelector(".lista")
+
+function renderizarLista() {
+  let visibles = precios
+
+  if (orden === "asc") {
+    visibles = [...precios].sort((a, b) => a - b)
+  } else if (orden === "desc") {
+    visibles = [...precios].sort((a, b) => b - a)
+  }
+
+  lista.innerHTML = ""
+
+  visibles.forEach(precio => {
+    const item = document.createElement("li")
+    item.textContent = `${precio} €`
+    lista.appendChild(item)
+  })
+
+}
+
+document.querySelector(".btn-original").addEventListener("click", () => {
+    orden = "original"
+    renderizarLista()
+  })
+
+  document.querySelector(".btn-asc").addEventListener("click", () => {
+    orden = "asc"
+    renderizarLista()
+
+  })
+
+  document.querySelector(".btn-desc").addEventListener("click", () => {
+    orden = "desc"
+    renderizarLista()
+
+  })
+
+renderizarLista()
+
+//---------------------CARRITO-------------------
+
+let productosInfo = [15, 25, 180]
+const btnTeclado = document.querySelector(".btn-teclado")
+const btnRaton = document.querySelector(".btn-raton")
+const btnMonitor = document.querySelector(".btn-monitor")
+
+const total = document.querySelector(".suma")
+
+const listaProd = document.querySelector(".listaProd")
+lista.innerHTML = ""
+
+btnTeclado.addEventListener("click", () => {
+  const item = document.createElement("li")
+
+  item.textContent = "Teclado 25€"
+  listaProd.appendChild(item)
+
+
+})
+
+document.querySelector(".btn-raton").addEventListener("click", () => {
+  
+})
+
+document.querySelector(".btn-monitor").addEventListener("click", () => {
+ 
+  
+})
+
+
+
+
