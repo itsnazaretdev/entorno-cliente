@@ -1,5 +1,5 @@
 :root {
-    --fuente-body: "Yuyu", sans-serif;
+    --fuente-body: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     --fuente-title:  "League Script", cursive;
 }
 
@@ -8,7 +8,7 @@
     margin: 0;
     box-sizing: border-box;
     font-family: var(--fuente-body);
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 header {
@@ -35,5 +35,7 @@ header ul {
 
 
 main {
+    width: 70%;
+    margin: 0 auto;
     margin-top: 4rem;
 }
