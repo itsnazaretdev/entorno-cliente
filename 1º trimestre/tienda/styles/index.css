@@ -1,8 +1,38 @@
+:root {
+    --fuente-body: "Yuyu", sans-serif;
+    --fuente-title:  "League Script", cursive;
+}
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: var(--fuente-body);
+    font-size: 1.2rem;
 }
+
+header {
+    display: flex;
+    justify-content: space-around;
+    padding: 2rem;
+}
+
+header ul {
+    display: flex;
+
+    gap: 2rem;
+    list-style: none;
+}
+
+.name {
+    font-family: var(--fuente-title);
+    font-size: 3rem;
+}
+
+.cart {
+    width: 2rem;
+}
+
 
 main {
     margin-top: 4rem;
