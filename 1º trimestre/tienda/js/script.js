@@ -97,3 +97,43 @@ botones.forEach(boton => {
 
     })
 });
+
+function filtrar2(value) {
+    const precioInput = Number(value)
+    const productoFiltrado = productos.filter(({ precio }) => precio === precioInput);
+    renderizar(productoFiltrado)
+    return productoFiltrado;
+}
+
+onst button = document.createElement("button")
+button.textContent = "filtrar"
+
+button.addEventListener("click", () => {
+    const filtrar = productos.filter(({precio}) => precio > 20)
+    renderizar(filtrar)
+})
+
+root.appendChild(button)
+
+const input = document.createElement("input")
+input.placeholder = "Número"
+input.addEventListener("input", (e) => {
+    filtrar2(e.target.value);
+});
+
+root.appendChild(input)
+
+const inputTexto = document.createElement("input")
+inputTexto.placeholder = "Nombre"
+inputTexto.addEventListener("input", (e) => {
+    const textoInput = inputTexto.value
+    const filtrarNombre = productos.filter(({nombre, descripcion, categoria}) => 
+        nombre.toLowerCase() === textoInput ||
+        descripcion.toLowerCase() === textoInput ||
+        categoria.toLowerCase() === textoInput
+    )
+    console.log(filtrarNombre)
+    renderizar(filtrarNombre)
+})
+
+root.appendChild(inputTexto)
