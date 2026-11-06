@@ -18,6 +18,8 @@ botonColor.forEach(boton => boton.addEventListener("click", (e) => {
 
 }));
 
+//clic al cambiar tarjeta cambia color, al corazón rellenarlo, en botón se añade al carrito
+
 const tarjetas = document.querySelectorAll(".tarjeta")
 
 tarjetas.forEach(boton => boton.addEventListener("click", (e) => {
