@@ -2,7 +2,6 @@ const botonColor = document.querySelectorAll(".boton-color")
 const p = document.querySelector(".parrafo")
 
 botonColor.forEach(boton => boton.addEventListener("click", (e) => {
-    console.log(e.target.textContent)
     // if (boton.textContent === "Rosa") {
     //     p.textContent = "Hizo click en el botón 'rosa'"
     // } else {
@@ -20,9 +19,19 @@ botonColor.forEach(boton => boton.addEventListener("click", (e) => {
 
 //clic al cambiar tarjeta cambia color, al corazón rellenarlo, en botón se añade al carrito
 
-const tarjetas = document.querySelectorAll(".tarjeta")
+const tarjetas = document.querySelectorAll(".card")
 
-tarjetas.forEach(boton => boton.addEventListener("click", (e) => {
-    console.log("target", e.target)
-    console.log("currentTarget", e.target.textContent)
+tarjetas.forEach(tarjeta => tarjeta.addEventListener("click", () => {
+    tarjeta.classList.toggle("fondoTarjeta") 
+    
+    const corazonLinea = document.querySelector(".bi-suit-heart")
+
+    const corazonLleno = document.querySelector(".bi-suit-heart-fill")
+
+    corazonLleno.classList.toggle("d-none")
+    corazonLinea.classList.toggle("d-done")
 }))
+
+ 
+    
+   
