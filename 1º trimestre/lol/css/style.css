@@ -1,11 +1,17 @@
 :root {
-    --font: "Inter", sans-serif;
-    --color-btn-jugar: #0bc4e2;
+    --font-inter: "Inter", sans-serif;
+    --font-cinzel: "Cinzel", serif;
+    --dorado: #c8aa6e;
+    --dorado-hover: #d3bb8b;
+    --azul: #0bc4e2;
     --black: #000000;
+    --gris-hover: #4b4b4b92;
+    --white: #ffffff;
 }
 
 header {
     height: 5rem;
+    background-color: var(--black);
 }
 
 .logo-riot:hover {
@@ -13,22 +19,21 @@ header {
 }
 
 .navbar {
-    width: 95%;
-    --bs-navbar-color: #fff;
-    font-family: var(--font);
+    --bs-navbar-color: var(--white);
+    font-family: var(--font-inter);
     font-size: 0.8em;
     font-weight: 600;
     letter-spacing: 1px;
 }
 
 .nav li:hover {
-    border-bottom: 3px solid var(--color-btn-jugar);
+    border-bottom: 3px solid var(--azul);
 }
 
 .nav li a:hover, .btn-nav:hover {
-    background-color: rgba(75, 75, 75, 0.572);
+    background-color: var(--gris-hover);
     border-radius: 8px;
-    color: #c8aa6e;
+    color: var(--dorado);
 }
 
 /*Para que pueda heredar de navbar porque Bootstrap lo evita*/
@@ -37,12 +42,50 @@ header {
 }
 
 .btn-jugar {
-    background-color: var(--color-btn-jugar);
+    background-color: var(--azul);
     color:var(--black);
-    font-family: var(--font);
+    font-family: var(--font-inter);
     font-weight: 600;
 }
 
 .btn-jugar:hover {
-    color: #c8aa6e;
+    color: var(--dorado);
+}
+
+.btn-search {
+    background-color: #2d2d2dd4;
+}
+
+/*-----------------HERO-----------------*/
+/* 80% del alto de la ventana, nunca menos de 480px ni más de 1080px */
+.hero {
+    min-height: clamp(480px, 80dvh, 1080px);
+    background-color: var(--black);
+}
+
+.titulo-hero {
+    width: 370px;
+}
+
+.p-hero {
+    width: 650px;
+    font-family: var(--font-cinzel);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.btn-hero {
+    background-color: var(--dorado);
+    border: 3px solid transparent;
+    background-clip: padding-box;  
+    outline: 1px solid var(--white);
+}
+
+.btn-hero:hover {
+    background-color: var(--dorado-hover);
+}
+
+.video-hero {
+    position: absolute;
+    object-fit: cover;
 }
