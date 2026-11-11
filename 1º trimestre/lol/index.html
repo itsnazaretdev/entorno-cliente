@@ -10,7 +10,10 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="/css/style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
     <title>League of Legends</title>
   </head>
   <body>
@@ -277,13 +280,114 @@
       <!-- Hero -->
       <section class="hero w-100 bg-inverse position-relative overflow-hidden">
         <!-- Vídeo -->
-        <video class="video-hero w-100 h-100 d-block" autoplay muted loop playsinline><source src="https://cmsassets.rgpub.io/sanity/files/dsfx7636/news/8ab3e227121c53aacab0c9b9f7a48adbc65db520.webm?accountingTag=LoL" type="video/webm"></video>
+        <video
+          class="video-hero w-100 h-100 d-block"
+          autoplay
+          muted
+          loop
+          playsinline
+        >
+          <source
+            src="https://cmsassets.rgpub.io/sanity/files/dsfx7636/news/8ab3e227121c53aacab0c9b9f7a48adbc65db520.webm?accountingTag=LoL"
+            type="video/webm"
+          />
+        </video>
 
         <!-- Info hero -->
-        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column gap-9 justify-content-center align-items-center">
-          <img src="/imgs/titulo-hero.webp" alt="League of legends" class="titulo-hero">
-          <p class="p-hero fg-white text-center w-75 mb-8"><i>League of Legends: Un MOBA 5v5 en el que los equipos se enfrentan para destruir el nexo enemigo</i></p>
-          <button type="button" class="btn rounded-0 btn-hero p-6 px-8">JUGAR GRATIS</button>
+        <div
+          class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column gap-9 justify-content-center align-items-center"
+        >
+          <img
+            src="/imgs/titulo-hero.webp"
+            alt="League of legends"
+            class="titulo-hero"
+          />
+          <h1 class="fg-white text-center w-75 mb-8">
+            <i
+              >League of Legends: Un MOBA 5v5 en el que los equipos se enfrentan
+              para destruir el nexo enemigo</i
+            >
+          </h1>
+          <button type="button" class="btn rounded-0 btn-hero p-6 px-8">
+            JUGAR GRATIS
+          </button>
+        </div>
+      </section>
+
+      <!-- Noticias destacadas -->
+      <section class="noticias-section m-0 m-auto d-flex flex-column gap-5">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2><i>NOTICIAS DESTACADAS</i></h2>
+          <a class="nav-link active" aria-current="page" href="#"
+            >EXPLORAR
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="#c8aa6e"
+              class="bi bi-box-arrow-up-right"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"
+              />
+              <path
+                fill-rule="evenodd"
+                d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"
+              /></svg
+          ></a>
+        </div>
+
+        <!-- Seccion de cards -->
+        <div class="d-flex w-75">
+          <!-- Card 1 -->
+          <div class="card" style="width: 18rem">
+            <img
+              src="/imgs/card-1.webp"
+              class="card-img-top"
+              alt="Ceremonia del mundial"
+            />
+            <div class="card-body">
+              <h3>
+                Ceremonia de apertura del Mundial 2026 presentada por Mastercard
+              </h3>
+              <p class="card-text">
+                La música, los efectos visuales y la energía preparan el
+                escenario para la final del Campeonato Mundial de League of
+                Legends 2026
+              </p>
+            </div>
+          </div>
+
+          <div class="card" style="width: 18rem">
+            <img
+              src="/imgs/card-1.webp"
+              class="card-img-top"
+              alt="Ceremonia del mundial"
+            />
+            <div class="card-body">
+              <p class="card-text">
+                La música, los efectos visuales y la energía preparan el
+                escenario para la final del Campeonato Mundial de League of
+                Legends 2026
+              </p>
+            </div>
+          </div>
+
+          <div class="card" style="width: 18rem">
+            <img
+              src="/imgs/card-1.webp"
+              class="card-img-top"
+              alt="Ceremonia del mundial"
+            />
+            <div class="card-body">
+              <p class="card-text">
+                Some quick example text to build on the card title and make up
+                the bulk of the card’s content.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -295,4 +399,3 @@
     <script src="/js/script.js"></script>
   </body>
 </html>
-
