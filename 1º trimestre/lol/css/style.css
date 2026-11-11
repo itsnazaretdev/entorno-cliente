@@ -1,3 +1,48 @@
-.logo-riot {
-    width: 10%;
+:root {
+    --font: "Inter", sans-serif;
+    --color-btn-jugar: #0bc4e2;
+    --black: #000000;
+}
+
+header {
+    height: 5rem;
+}
+
+.logo-riot:hover {
+    color: red;
+}
+
+.navbar {
+    width: 95%;
+    --bs-navbar-color: #fff;
+    font-family: var(--font);
+    font-size: 0.8em;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.nav li:hover {
+    border-bottom: 3px solid var(--color-btn-jugar);
+}
+
+.nav li a:hover, .btn-nav:hover {
+    background-color: rgba(75, 75, 75, 0.572);
+    border-radius: 8px;
+    color: #c8aa6e;
+}
+
+/*Para que pueda heredar de navbar porque Bootstrap lo evita*/
+.btn-nav {
+    letter-spacing: inherit;
+}
+
+.btn-jugar {
+    background-color: var(--color-btn-jugar);
+    color:var(--black);
+    font-family: var(--font);
+    font-weight: 600;
+}
+
+.btn-jugar:hover {
+    color: #c8aa6e;
 }
