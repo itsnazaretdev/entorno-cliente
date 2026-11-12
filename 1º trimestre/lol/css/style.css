@@ -98,6 +98,7 @@ header {
 }
 
 /*-----------------HERO-----------------*/
+/* 80% del alto de la ventana, nunca menos de 480px ni más de 1080px */
 .hero {
     min-height: clamp(480px, 80dvh, 1080px);
     background-color: var(--black);
@@ -134,9 +135,9 @@ header {
 }
 
 .noticias-section .card {
-    --bs-card-border-width: 0;
-    --bs-card-border-radius: 0;
-    --bs-card-inner-border-radius: 0;
+    --bs-card-border-width: 0;          /* sin borde */
+    --bs-card-border-radius: 0;         /* esquinas rectas */
+    --bs-card-inner-border-radius: 0;   /* esquinas de la imagen de arriba */
 }
 
 .a-explorar {
@@ -237,15 +238,6 @@ header {
     background-position: center;
 }
 
-.formas-jugar-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: 2rem;
-    width: 90%;
-    margin: 0 auto;
-}
-
 .lista-juegos {
     display: flex;
     flex-direction: column;
@@ -254,11 +246,13 @@ header {
     text-align: center;
     cursor: pointer;
     opacity: 0.5;
-    transition: transform 300ms, opacity 300ms;
+    transition: transform 0.2;
 }
 
 .lista-juegos:hover {
-    transform: scale(1.1);
+    transform: scale(1.2);
+    transition: transform 0.2s;
+    opacity: 1;
 }
 
 .lista-juegos-activo {
@@ -282,6 +276,8 @@ header {
 
 .titulo-video {
     font-family: var(--font-cinzel);
+    font-size: 1.6rem;
+    width: 80%;
 }
 
 .video-div {
