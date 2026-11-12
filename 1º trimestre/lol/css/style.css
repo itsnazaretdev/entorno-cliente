@@ -4,7 +4,7 @@
     --dorado: #c8aa6e;
     --dorado-hover: #d3bb8b;
     --azul: #0bc4e2;
-    --azul-claro: #0bc5e2c6;
+    --azul-hover: #0bc5e2c6;
     --black: #000000;
     --gris-hover: #4b4b4b92;
     --white: #ffffff;
@@ -26,7 +26,7 @@ h2 {
     text-transform: uppercase;
 }
 
-.h2-campeon {
+.h2-campeon{
     font-size: 3.5rem;
     font-weight: 800;
 }
@@ -125,7 +125,6 @@ header {
 
 /*-----------------NOTICIAS-----------------*/
 .noticias-section {
-    width: 100%;
     background-image: url("../imgs/fondo-noticias.webp");
     background-size: cover;
     background-position: center;
@@ -166,7 +165,14 @@ header {
 }
 
 .btn-azul-jugar:hover {
-    background-color: var(--azul-claro);
+    background-color: var(--azul-hover);
+}
+
+.btn-descubrir-campeones {
+    background-color: var(--dorado);
+}
+.btn-descubrir-campeones:hover {
+    background-color: var(--dorado-hover);
 }
 
 .div-elige-campeon {
@@ -205,4 +211,22 @@ header {
     text-transform: uppercase;
     font-size: 0.8rem;
     font-weight: 700;
+}
+
+/*-----------------ESTILO-----------------*/
+.estilo-section {
+    background-image: url("../imgs/fondo-1.webp");
+    background-size: cover;
+    background-position: center;
+}
+
+.p-estilo {
+    font-family: var(--font-cinzel);
+    font-size: 5rem;
+    font-weight: 800;
+}
+
+.p-aplasta {
+    font-family: var(--font-cinzel);
+    font-weight: 800;
 }
