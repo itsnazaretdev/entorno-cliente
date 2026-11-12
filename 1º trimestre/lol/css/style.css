@@ -98,7 +98,6 @@ header {
 }
 
 /*-----------------HERO-----------------*/
-/* 80% del alto de la ventana, nunca menos de 480px ni más de 1080px */
 .hero {
     min-height: clamp(480px, 80dvh, 1080px);
     background-color: var(--black);
@@ -135,9 +134,9 @@ header {
 }
 
 .noticias-section .card {
-    --bs-card-border-width: 0;          /* sin borde */
-    --bs-card-border-radius: 0;         /* esquinas rectas */
-    --bs-card-inner-border-radius: 0;   /* esquinas de la imagen de arriba */
+    --bs-card-border-width: 0;
+    --bs-card-border-radius: 0;
+    --bs-card-inner-border-radius: 0;
 }
 
 .a-explorar {
@@ -229,4 +228,78 @@ header {
 .p-aplasta {
     font-family: var(--font-cinzel);
     font-weight: 800;
+}
+
+/*-----------------FORMAS JUGAR-----------------*/
+.formas-jugar-section {
+    background-image: url("../imgs/fondo-2.webp");
+    background-size: cover;
+    background-position: center;
+}
+
+.formas-jugar-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 2rem;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.lista-juegos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: transform 300ms, opacity 300ms;
+}
+
+.lista-juegos:hover {
+    transform: scale(1.1);
+}
+
+.lista-juegos-activo {
+    opacity: 1;
+}
+
+.lista-juegos img {
+    width: 6rem;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.lista-juegos p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--white);
+}
+
+.titulo-video {
+    font-family: var(--font-cinzel);
+}
+
+.video-div {
+    padding: 1.5rem;
+    border: 1px solid var(--dorado);
+    border-radius: 50%;
+}
+
+.video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+
+.p-video {
+    color: var(--white);
+    opacity: 0.8;
 }

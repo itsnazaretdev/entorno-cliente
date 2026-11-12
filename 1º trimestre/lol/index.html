@@ -475,54 +475,54 @@
             </div>
 
             <!-- Lista campeones -->
-            <ol class="d-flex gap-6 mt-5">
-              <div class="lista-campeones">
+            <ol class="d-flex gap-6 mt-5 ps-0">
+              <li class="lista-campeones">
                 <img
                   src="./imgs/e1511d4d93a84b836844c77b4ff96b1cf65f4f8d-220x220.webp"
                   alt="Asesinos"
                 />
                 <p>Asesinos</p>
-              </div>
+              </li>
 
-              <div class="lista-campeones">
+              <li class="lista-campeones">
                 <img
                   src="./imgs/651b0a4388dffbb709588546d7d73fd1a4e5b45d-220x220.webp"
                   alt="Luchadores"
                 />
                 <p>Luchadores</p>
-              </div>
+              </li>
 
-              <div class="lista-campeones">
+              <li class="lista-campeones">
                 <img
                   src="./imgs/9872a60add3d215d217eda67e08a07ef7191ab89-220x220.webp"
                   alt="Magos"
                 />
                 <p>Magos</p>
-              </div>
+              </li>
 
-              <div class="lista-campeones">
+              <li class="lista-campeones">
                 <img
                   src="./imgs/fce8a3c7b1267ce428530fa845dd3f970772d5cd-220x220.webp"
                   alt="Tiradores"
                 />
                 <p>Tiradores</p>
-              </div>
+              </li>
 
-              <div class="lista-campeones">
+              <li class="lista-campeones">
                 <img
                   src="./imgs/1824a47af762aeac9d88d3bae5a4eb2ece928f0d-220x220.webp"
                   alt="Apoyos"
                 />
                 <p>Apoyos</p>
-              </div>
+              </li>
 
-              <div class="lista-campeones">
+              <li class="lista-campeones">
                 <img
                   src="./imgs/019898f21e749a5f6f71b609714d87f3fe084df5-220x220.webp"
                   alt="Tanques"
                 />
                 <p>Tanques</p>
-              </div>
+              </li>
             </ol>
           </div>
 
@@ -552,14 +552,12 @@
           </div>
 
           <!-- Elige a -->
-          <div
-            class="w-100 d-flex flex-column justify-content-center gap-4"
-          >
-          <div class="d-flex flex-column">
-            <p class="fg-white p-aplasta fs-lg mb-0"><i>Aplasta con</i></p>
-            <p class="fg-white p-estilo mb-0"><i>Estilo</i></p>
-          </div>
-            
+          <div class="w-100 d-flex flex-column justify-content-center gap-4">
+            <div class="d-flex flex-column">
+              <p class="fg-white p-aplasta fs-lg mb-0"><i>Aplasta con</i></p>
+              <p class="fg-white p-estilo mb-0"><i>Estilo</i></p>
+            </div>
+
             <p class="p-campeon fg-white">
               Personaliza tu experiencia con aspectos para tus campeones
               favoritos.
@@ -571,6 +569,65 @@
             >
               Jugar ahora
             </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Elige a tu campeón -->
+      <section class="formas-jugar-section w-100">
+        <div class="formas-jugar-grid">
+          <!-- Elige a -->
+          <div
+            class="w-100 d-flex flex-column justify-content-center align-items-center gap-6"
+          >
+            <p class="fg-white text-uppercase fs-lg mb-0">Varias formas de</p>
+            <h2 class="h2-campeon fg-white"><i>Jugar</i></h2>
+            <button
+              type="button"
+              class="btn-descubrir-campeones btn rounded-0 p-6 px-8 text-uppercase mt-5"
+            >
+              Jugar ahora
+            </button>
+
+            <!-- Lista juegos -->
+            <ol class="d-flex gap-6 mt-5 ps-0">
+              <li class="lista-juegos">
+                <img src="./imgs/forma-1.webp" alt="Grieta del invocador" />
+                <p>Grieta del invocador</p>
+              </li>
+
+              <li class="lista-juegos lista-juegos-activo">
+                <img src="./imgs/forma-2.webp" alt="Aram" />
+                <p>Aram</p>
+              </li>
+
+              <li class="lista-juegos">
+                <img src="./imgs/forma-3.webp" alt="Aram: caos" />
+                <p>Aram: caos</p>
+              </li>
+
+              <li class="lista-juegos">
+                <img src="./imgs/forma-4.webp" alt="Teamfight tactics" />
+                <p>Teamfight tactics</p>
+              </li>
+            </ol>
+          </div>
+
+          <!-- Vídeo del modo de juego -->
+          <div class="video-formas-jugar text-center d-flex flex-column gap-5">
+            <!-- Aro dorado: el padding es el hueco entre aro y vídeo -->
+            <div class="video-div">
+              <video class="video" autoplay muted loop playsinline>
+              <source
+                src="https://cmsassets.rgpub.io/sanity/files/dsfx7636/news/0a9b9f8dacb54086c58c1af8aa880d7cf6d7fea6.mp4?accountingTag=LoL"
+                type="video/mp4"
+              />
+              </video>
+            </div>
+            <h3 class="titulo-video fg-white mt-5">All Random, All Mid(todo aleatorio, todos en la calle central)</h3>
+            <p class="p-video fg-white">
+              Lucha sobre un puente helado con tu equipo de campeones aleatorios y carga hacia el nexo enemigo en este caótico pero divertidísimo modo cinco contra cinco.
+            </p>
           </div>
         </div>
       </section>
