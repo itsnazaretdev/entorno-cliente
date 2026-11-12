@@ -25,6 +25,11 @@ h2 {
     text-transform: uppercase;
 }
 
+.h2-campeon {
+    font-size: 3.5rem;
+    font-weight: 800;
+}
+
 h3 {
     font-family: var(--font-inter);
     font-size: 1.2rem;
@@ -38,7 +43,9 @@ h4 {
     padding-top: 1rem;
 }
 
-
+p {
+    font-family: var(--font-inter);
+}
 
 header {
     height: 5rem;
@@ -146,4 +153,47 @@ header {
     color: var(--dorado);
     text-transform: uppercase;
     font-weight: 800;
+}
+
+/*-----------------CAMPEÓN-----------------*/
+.p-campeon {
+    font-size: 1.1rem;
+}
+
+.btn-azul-jugar {
+    background-color: var(--azul);
+}
+
+.div-elige-campeon {
+    width: 90%;
+}
+
+.img-campeon {
+    width: 95%;
+}
+
+.lista-campeones {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.2s;
+    opacity: 0.5;
+}
+
+.lista-campeones:hover {
+    transform: scale(1.2);
+    transition: transform 0.2s;
+    opacity: 1;
+}
+
+.lista-campeones img {
+    width: 6rem;
+}
+
+.lista-campeones p {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 700;
 }
