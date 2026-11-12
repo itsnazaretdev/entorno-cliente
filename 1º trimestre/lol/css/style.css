@@ -4,6 +4,7 @@
     --dorado: #c8aa6e;
     --dorado-hover: #d3bb8b;
     --azul: #0bc4e2;
+    --azul-claro: #0bc5e2c6;
     --black: #000000;
     --gris-hover: #4b4b4b92;
     --white: #ffffff;
@@ -164,6 +165,10 @@ header {
     background-color: var(--azul);
 }
 
+.btn-azul-jugar:hover {
+    background-color: var(--azul-claro);
+}
+
 .div-elige-campeon {
     width: 90%;
 }
@@ -180,6 +185,10 @@ header {
     gap: 1rem;
     transition: transform 0.2s;
     opacity: 0.5;
+}
+
+.lista-campeones-activo {
+    opacity: 1;
 }
 
 .lista-campeones:hover {
