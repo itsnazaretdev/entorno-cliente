@@ -21,7 +21,10 @@
       class="bg-inverse d-flex align-items-center justify-content-around sticky-top px-7"
     >
       <!-- Barra de navegación principal -->
-      <nav class="navbar md:navbar-expand w-100 text-uppercase" data-bs-theme="dark">
+      <nav
+        class="navbar md:navbar-expand w-100 text-uppercase"
+        data-bs-theme="dark"
+      >
         <!-- Contenedor fluido: ocupa todo el ancho disponible -->
         <div class="container-fluid">
           <!-- Nombre o marca que aparece en la barra -->
@@ -317,88 +320,122 @@
       <!-- Noticias destacadas -->
       <section class="noticias-section pt-12">
         <div class="noticias-content m-auto d-flex flex-column gap-5">
-        <div class="d-flex justify-content-between align-items-center">
-          <h2><i>Noticias destacadas</i></h2>
-          <a class="a-explorar nav-link active" aria-current="page" href="#"
-            >Explorar
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="#c8aa6e"
-              class="bi bi-box-arrow-up-right"
-              viewBox="0 0 16 16"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"
-              />
-              <path
-                fill-rule="evenodd"
-                d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"
-              /></svg
-          ></a>
-        </div>
-
-        <!-- Seccion de cards -->
-        <div class="w-100 d-flex w-75 gap-9 justify-content-between align-content-center">
-          <!-- Card 1 -->
-          <div class="card card-noticias bg-transparent">
-            <img
-              src="imgs/card-1.webp"
-              class="card-img-top"
-              alt="Ceremonia del mundial"
-            />
-
-            <h4><span class="span-categoria">Esports</span> | 10/11/2026</h4>
-
-            <div class="card-body p-0 pt-5">
-              <h3>
-                Ceremonia de apertura del Mundial 2026 presentada por Mastercard
-              </h3>
-              <p class="card-text">
-                La música, los efectos visuales y la energía preparan el
-                escenario para la final del Campeonato Mundial de League of
-                Legends 2026
-              </p>
+          <div class="d-flex justify-content-between align-items-center">
+            <h2><i>Noticias destacadas</i></h2>
+            <div class="d-flex justify-content-center align-items-center gap-3">
+              <a class="a-explorar nav-link active" aria-current="page" href="#"
+                >Explorar</a
+              >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="#c8aa6e"
+                class="bi bi-box-arrow-up-right"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"
+                />
+                <path
+                  fill-rule="evenodd"
+                  d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"
+                />
+              </svg>
             </div>
           </div>
 
-          <!-- Card 2 -->
-          <div class="card card-noticias bg-transparent">
-            <img
-              src="imgs/card-2.webp"
-              class="card-img-top"
-              alt="Ceremonia del mundial"
-            />
-            
-            <h4><span class="span-categoria">Multimedia</span> | 10/11/2026</h4>
+          <!-- Seccion de cards -->
+          <div
+            class="w-100 d-flex gap-9 justify-content-between align-content-center"
+          >
+            <!-- Card 1 -->
+            <div class="card card-noticias bg-transparent">
+              <div class="position-relative">
+                <img
+                  src="imgs/card-1.webp"
+                  class="card-img-top"
+                  alt="Ceremonia del mundial"
+                />
+                <img
+                  src="./imgs/link-square.svg"
+                  class="position-absolute bottom-0 end-0 w-3"
+                  alt="Icono ir a"
+                />
+              </div>
 
-            <div class="card-body p-0 pt-5">
-              <h3>Tráiler de la apertura de la final: Mundial 2026</h3>
-              <p class="card-text">
-                True Damage + K/DA. No os perdáis nada de la ceremonia de apertura de la final del Mundial 2026.
-              </p>
+              <h4><span class="span-categoria">Esports</span> | 10/11/2026</h4>
+
+              <div class="card-body p-0 pt-5">
+                <h3>
+                  Ceremonia de apertura del Mundial 2026 presentada por
+                  Mastercard
+                </h3>
+                <p class="card-text">
+                  La música, los efectos visuales y la energía preparan el
+                  escenario para la final del Campeonato Mundial de League of
+                  Legends 2026
+                </p>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card card-noticias bg-transparent">
+              <div class="position-relative">
+                <img
+                  src="imgs/card-2.webp"
+                  class="card-img-top"
+                  alt="Ceremonia del mundial"
+                />
+                <img
+                  src="./imgs/player-square.svg"
+                  class="position-absolute top-50 start-50 translate-middle w-3"
+                  alt="Icono play"
+                />
+              </div>
+
+              <h4>
+                <span class="span-categoria">Multimedia</span> | 10/11/2026
+              </h4>
+
+              <div class="card-body p-0 pt-5">
+                <h3>Tráiler de la apertura de la final: Mundial 2026</h3>
+                <p class="card-text">
+                  True Damage + K/DA. No os perdáis nada de la ceremonia de
+                  apertura de la final del Mundial 2026.
+                </p>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card card-noticias bg-transparent">
+              <div class="position-relative">
+                <img
+                  src="imgs/card-3.webp"
+                  class="card-img-top"
+                  alt="Ceremonia del mundial"
+                />
+                <img
+                  src="./imgs/link-square.svg"
+                  class="position-absolute bottom-0 end-0 w-3"
+                  alt="Icono ir a"
+                />
+              </div>
+
+              <h4>
+                <span class="span-categoria">Actualizaciones del juego</span> |
+                9/11/2026
+              </h4>
+
+              <div class="card-body p-0 pt-5">
+                <h3>Liberad la bandada de cuervos</h3>
+                <p class="card-text">
+                  Swain, Volibear y Elise ya están disponibles en LoL Classic.
+                </p>
+              </div>
             </div>
           </div>
-
-          <!-- Card 3 -->
-          <div class="card card-noticias bg-transparent">
-            <img
-              src="imgs/card-3.webp"
-              class="card-img-top"
-              alt="Ceremonia del mundial"
-            />
-              <h4><span class="span-categoria">Actualizaciones del juego</span> | 9/11/2026</h4>
-
-            <div class="card-body p-0 pt-5">
-              <h3>Liberad la bandada de cuervos</h3>
-              <p class="card-text">
-                Swain, Volibear y Elise ya están disponibles en LoL Classic.
-              </p>
-            </div>
-          </div>
-        </div>
         </div>
       </section>
     </main>
