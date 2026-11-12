@@ -294,8 +294,19 @@ header {
     border-radius: 50%;
 }
 
-
 .p-video {
     color: var(--white);
     opacity: 0.8;
+}
+
+/*-----------------VIDEO FINAL-----------------*/
+.section-video-final {
+    min-height: 640px;
+    background-color: var(--black);
+}
+
+.video-final {
+    position: absolute;
+    object-fit: cover;
+
 }
