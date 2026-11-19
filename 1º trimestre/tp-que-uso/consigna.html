@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TP: ¿Qué uso y por qué?</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* La flecha gira cuando el bloque está abierto (Bootstrap cambia aria-expanded) */
+        .btn-desplegar .flecha { display: inline-block; transition: transform .35s ease; }
+        .btn-desplegar[aria-expanded="true"] .flecha { transform: rotate(180deg); }
+        /* Transición de altura un poco más suave que la de Bootstrap (.35s) */
+        .collapsing { transition: height .45s ease; }
+    </style>
+</head>
+<body class="bg-light">
+<!-- CONTENIDO PARA MOODLE: copiar desde aquí -->
+<div class="container py-4" style="max-width: 920px;">
+
+    <!-- Encabezado -->
+    <header class="p-4 mb-4 bg-dark text-white rounded-3 shadow-sm">
+        <span class="badge bg-warning text-dark mb-2">Desarrollo Web en Entorno Cliente</span>
+        <h1 class="display-6 fw-bold mb-2">TP: ¿Qué uso y por qué?</h1>
+        <p class="lead mb-3">Ya conocés los métodos de array y los eventos. Lo que cuesta es <strong>elegir cuál</strong>. En este TP, cada ejercicio te obliga a decidir <strong>antes</strong> de escribir código.</p>
+        <div class="d-flex flex-wrap gap-2">
+            <span class="badge rounded-pill text-bg-light">🎮 Home de League of Legends</span>
+            <span class="badge rounded-pill text-bg-light">🛠 Consola (F12) siempre abierta</span>
+        </div>
+    </header>
+
+    <!-- Ficha del trabajo práctico -->
+    <section id="ficha" class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h2 class="h5 mb-0">📋 Ficha del trabajo práctico</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive mb-3">
+                <table class="table table-sm table-bordered align-middle mb-0">
+                    <tbody>
+                        <tr><th class="table-light" style="width: 30%;">Ciclo / Curso</th><td>CFGS Desarrollo de Aplicaciones Web, 2.º curso</td></tr>
+                        <tr><th class="table-light">Módulo</th><td>Desarrollo Web en Entorno Cliente</td></tr>
+                        <tr><th class="table-light">Unidad</th><td>Métodos de array y gestión de eventos en el DOM</td></tr>
+                        <tr><th class="table-light">Modalidad</th><td>Individual, en el aula</td></tr>
+                        <tr><th class="table-light">Entrega</th><td>Tarea de Moodle, en la fecha indicada en el curso</td></tr>
+                        <tr><th class="table-light">Material</th><td><code>plantilla.html</code> (datos, HTML y CSS ya preparados)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="h6 fw-bold">Objetivo general</h3>
+            <p>Que el alumnado sea capaz de <strong>seleccionar y justificar</strong> el método de array y el evento adecuados para resolver un problema concreto de una interfaz web, y de implementarlos correctamente en JavaScript.</p>
+
+            <h3 class="h6 fw-bold">Objetivos específicos</h3>
+            <ul>
+                <li>Distinguir qué devuelve cada método de array (<code>forEach</code>, <code>map</code>, <code>filter</code>, <code>find</code>, <code>some</code>, <code>includes</code>, <code>reduce</code>, <code>sort</code>) y elegirlo según el resultado buscado.</li>
+                <li>Identificar el evento apropiado para cada interacción (ratón, teclado, foco, entrada de texto) y el elemento donde conviene escucharlo.</li>
+                <li>Aplicar la propagación de eventos: diferenciar <code>event.target</code> de <code>event.currentTarget</code>, usar la delegación y <code>stopPropagation()</code>.</li>
+                <li>Modificar el DOM a partir de un estado: renderizar listas, cambiar clases y estilos.</li>
+                <li>Justificar por escrito cada decisión técnica antes de programarla.</li>
+            </ul>
+
+            <h3 class="h6 fw-bold">Resultados de aprendizaje relacionados</h3>
+            <ul class="mb-0">
+                <li>Programa código para clientes web utilizando estructuras definidas por el usuario (arrays y objetos).</li>
+                <li>Desarrolla aplicaciones web interactivas integrando mecanismos de manejo de eventos.</li>
+                <li>Desarrolla aplicaciones web aplicando las características del modelo de objetos del documento (DOM).</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Índice -->
+    <nav class="nav nav-pills flex-wrap gap-2 mb-4">
+        <a class="nav-link border" href="#ficha">📋 Ficha</a>
+        <a class="nav-link active" href="#ayuda">💡 Ayuda rápida</a>
+        <a class="nav-link border" href="#como">Cómo se trabaja</a>
+        <a class="nav-link border" href="#parte-1">Parte 1: Métodos</a>
+        <a class="nav-link border" href="#parte-2">Parte 2: Eventos</a>
+        <a class="nav-link border" href="#parte-3">Parte 3: Integrador</a>
+        <a class="nav-link border" href="#entrega">Entrega</a>
+        <a class="nav-link border" href="#evaluacion">📊 Evaluación</a>
+    </nav>
+
+    <!-- Ayuda rápida -->
+    <section id="ayuda" class="card border-primary shadow-sm mb-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="h5 mb-0">💡 Ayuda rápida: tenela a mano mientras trabajás</h2>
+            <button class="btn btn-sm btn-light btn-desplegar" type="button" data-bs-toggle="collapse" data-bs-target="#ayuda-contenido" aria-expanded="false" aria-controls="ayuda-contenido">Ver ayuda <span class="flecha">▾</span></button>
+        </div>
+        <div id="ayuda-contenido" class="collapse">
+            <div class="card-body">
+
+                <h3 class="h6 fw-bold text-primary">Métodos: ¿qué quiero obtener?</h3>
+                <div class="table-responsive mb-4">
+                    <table class="table table-sm table-striped table-bordered align-middle mb-0">
+                        <thead class="table-primary">
+                            <tr><th>Quiero…</th><th>Método</th><th>Devuelve</th><th>Cómo se escribe</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Hacer algo con cada uno (mostrar, pintar)</td><td><code>forEach</code></td><td><code>undefined</code> (nada)</td><td><code>array.forEach(x =&gt; console.log(x))</code></td></tr>
+                            <tr><td>Transformar cada uno en otra cosa</td><td><code>map</code></td><td>Array nuevo, <strong>mismo largo</strong></td><td><code>array.map(x =&gt; x * 2)</code></td></tr>
+                            <tr><td><strong>Todos</strong> los que cumplen</td><td><code>filter</code></td><td>Array (puede estar vacío <code>[]</code>)</td><td><code>array.filter(x =&gt; x &gt; 10)</code></td></tr>
+                            <tr><td>El <strong>primero</strong> que cumple</td><td><code>find</code></td><td>Un elemento, o <code>undefined</code></td><td><code>array.find(x =&gt; x &gt; 10)</code></td></tr>
+                            <tr><td>¿Está <strong>este valor</strong> exacto?</td><td><code>includes</code></td><td><code>true</code> / <code>false</code></td><td><code>array.includes(valor)</code></td></tr>
+                            <tr><td>¿Hay <strong>alguno</strong> que cumpla una condición?</td><td><code>some</code></td><td><code>true</code> / <code>false</code></td><td><code>array.some(x =&gt; x &gt; 10)</code></td></tr>
+                            <tr><td>Juntar todo en <strong>un solo valor</strong> (total, máximo)</td><td><code>reduce</code></td><td>Lo que guardes en el acumulador</td><td><code>array.reduce((acumulador, x) =&gt; acumulador + x, 0)</code></td></tr>
+                            <tr><td>Ordenar</td><td><code>sort</code></td><td>El <strong>mismo</strong> array, modificado <span class="badge text-bg-danger">⚠️ ojo</span></td><td><code>[...array].sort((a, b) =&gt; a - b)</code></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="h6 fw-bold text-primary">Eventos: ¿qué tengo que detectar?</h3>
+                <div class="table-responsive mb-4">
+                    <table class="table table-sm table-striped table-bordered align-middle mb-0">
+                        <thead class="table-primary">
+                            <tr><th>Quiero detectar…</th><th>Evento</th><th>Cómo se escribe</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Un clic (o un toque en el celular)</td><td><code>click</code></td><td><code>boton.addEventListener("click", (event) =&gt; { ... })</code></td></tr>
+                            <tr><td>El mouse entra / sale de un elemento</td><td><code>mouseenter</code> / <code>mouseleave</code><br><code>mouseover</code> / <code>mouseout</code></td><td><code>caja.addEventListener("mouseenter", () =&gt; { ... })</code></td></tr>
+                            <tr><td>Cada letra que se escribe en un input</td><td><code>input</code></td><td><code>entrada.addEventListener("input", () =&gt; { entrada.value })</code></td></tr>
+                            <tr><td>El valor cambió y el usuario <strong>terminó</strong> (salió del campo, eligió opción)</td><td><code>change</code></td><td><code>entrada.addEventListener("change", () =&gt; { entrada.value })</code></td></tr>
+                            <tr><td>Una tecla concreta (Enter, Escape)</td><td><code>keydown</code> + <code>event.key</code></td><td><code>entrada.addEventListener("keydown", (event) =&gt; { if (event.key === "Enter") { ... } })</code></td></tr>
+                            <tr><td>El usuario entra / sale de un campo</td><td><code>focus</code> / <code>blur</code></td><td><code>entrada.addEventListener("blur", () =&gt; { ... })</code></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-7">
+                        <h3 class="h6 fw-bold text-primary">Herramientas que vas a necesitar</h3>
+                        <ul class="list-group list-group-flush small">
+                            <li class="list-group-item px-0"><code>event.target</code>: el elemento <strong>exacto</strong> donde ocurrió el evento.</li>
+                            <li class="list-group-item px-0"><code>event.currentTarget</code>: el elemento que <strong>tiene el listener</strong>.</li>
+                            <li class="list-group-item px-0"><code>elemento.closest(".clase")</code>: sube desde el elemento (incluido) hasta encontrar uno que coincida. Si no hay, devuelve <code>null</code>.</li>
+                            <li class="list-group-item px-0"><code>event.stopPropagation()</code>: el evento deja de subir a los padres (corta el burbujeo).</li>
+                            <li class="list-group-item px-0"><code>elemento.classList.add / remove / toggle / contains("clase")</code>: poner, sacar, alternar o preguntar por una clase.</li>
+                            <li class="list-group-item px-0"><code>elemento.textContent</code>: el texto de un elemento. <code>input.value</code>: lo que se escribió en un input.</li>
+                            <li class="list-group-item px-0"><code>texto.toLowerCase().includes(otro)</code>: buscar sin importar mayúsculas.</li>
+                            <li class="list-group-item px-0"><code>[...array]</code>: hace una copia del array (útil antes de <code>sort</code>).</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="alert alert-danger h-100 mb-0">
+                            <h3 class="h6 fw-bold">🐞 Si algo no funciona</h3>
+                            <ol class="small mb-0 ps-3">
+                                <li>Mirá la consola (F12): ¿hay un error en rojo? Leelo, dice la línea.</li>
+                                <li>¿El <code>querySelector</code> encontró el elemento? Hacé <code>console.log(elemento)</code>: si sale <code>null</code>, el selector está mal.</li>
+                                <li>¿El evento se dispara? Poné un <code>console.log("entró")</code> como primera línea del listener.</li>
+                                <li>¿Qué es realmente <code>event.target</code>? Hacé <code>console.log(event.target)</code> y mirá qué elemento sale.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Cómo se trabaja -->
+    <section id="como" class="mb-4">
+        <h2 class="h3 border-bottom border-warning border-3 pb-2 mb-3">Cómo se trabaja cada ejercicio</h2>
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <span class="badge rounded-pill bg-dark fs-6 mb-2">1</span>
+                        <p class="card-text mb-0"><strong>Leé el escenario</strong> completo.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <span class="badge rounded-pill bg-dark fs-6 mb-2">2</span>
+                        <p class="card-text mb-0"><strong>Escribí tu decisión</strong> en un comentario, en una sola línea, con el porqué.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <span class="badge rounded-pill bg-dark fs-6 mb-2">3</span>
+                        <p class="card-text mb-0"><strong>Recién ahí, programalo.</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <pre class="bg-dark text-light p-3 rounded small mb-3"><code>// Decisión: filter, porque quiero TODOS los que cumplen y me devuelve un array.</code></pre>
+        <div class="alert alert-info">
+            Si no podés escribir el porqué, todavía no decidiste: volvé a leer el escenario. <strong>Una decisión sin porqué no cuenta, aunque el código funcione.</strong>
+        </div>
+
+        <!-- Ejemplo resuelto -->
+        <div class="card border-success shadow-sm mb-3">
+            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                <span><strong>🧩 Ejemplo resuelto</strong> <small>(con datos que no están en el TP)</small></span>
+                <button class="btn btn-sm btn-light btn-desplegar" type="button" data-bs-toggle="collapse" data-bs-target="#ejemplo-contenido" aria-expanded="false" aria-controls="ejemplo-contenido">Ver ejemplo <span class="flecha">▾</span></button>
+            </div>
+            <div id="ejemplo-contenido" class="collapse">
+            <div class="card-body">
+                <p class="mb-2">Datos de la tienda de objetos:</p>
+                <pre class="bg-dark text-light p-3 rounded small"><code>const objetos = [
+    { nombre: "Espada larga", precio: 350 },
+    { nombre: "Filo infinito", precio: 3400 },
+    { nombre: "Botas", precio: 300 },
+    { nombre: "Sombrero de Rabadon", precio: 3600 }
+];</code></pre>
+
+                <h3 class="h6 fw-bold mt-3">Ejemplo con métodos</h3>
+                <p class="mb-2"><strong>Escenario:</strong> la tienda quiere un cartel con <strong>los nombres</strong> de los objetos que cuestan <strong>más de 3000</strong>.</p>
+
+                <div class="row g-3 mb-2">
+                    <div class="col-md-6">
+                        <div class="alert alert-danger h-100 mb-0">
+                            <p class="fw-bold mb-1">❌ Decisión incompleta</p>
+                            <code>// Decisión: filter.</code>
+                            <p class="small mb-0 mt-2">No dice por qué. Y <code>filter</code> solo devuelve objetos enteros, no nombres: falta un paso.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-success h-100 mb-0">
+                            <p class="fw-bold mb-1">✅ Decisión correcta</p>
+                            <code>// Decisión: filter + map, porque primero quiero VARIOS (los caros) y después transformar cada uno en su nombre.</code>
+                        </div>
+                    </div>
+                </div>
+                <pre class="bg-dark text-light p-3 rounded small"><code>// Decisión: filter + map, porque primero quiero VARIOS (los caros)
+// y después transformar cada uno en su nombre.
+const caros = objetos.filter(objeto =&gt; objeto.precio &gt; 3000);
+const nombresCaros = caros.map(objeto =&gt; objeto.nombre);
+
+console.log(nombresCaros); // ["Filo infinito", "Sombrero de Rabadon"]</code></pre>
+
+                <h3 class="h6 fw-bold mt-3">Ejemplo con eventos</h3>
+                <p class="mb-2"><strong>Escenario:</strong> en el chat del juego, cuando el usuario aprieta <strong>Enter</strong> en el input, el mensaje se agrega a la lista y el input se vacía.</p>
+                <pre class="bg-dark text-light p-3 rounded small mb-2"><code>// Decisión: keydown en el input del chat, porque necesito saber QUÉ tecla
+// se apretó (event.key). Con "input" no sé si fue Enter, y "change"
+// solo se dispara al salir del campo.
+const chat = document.querySelector(".chat-entrada");
+const mensajes = document.querySelector(".chat-mensajes");
+
+chat.addEventListener("keydown", (event) =&gt; {
+    if (event.key !== "Enter") return;
+    if (chat.value.trim() === "") return;
+
+    const item = document.createElement("li");
+    item.textContent = chat.value;
+    mensajes.appendChild(item);
+    chat.value = "";
+});</code></pre>
+                <p class="small text-body-secondary mb-0">Fijate que la decisión no solo nombra el evento: explica <strong>por qué los otros no sirven</strong>. Ese es el nivel que se espera en cada ejercicio.</p>
+            </div>
+            </div>
+        </div>
+        <p class="fw-bold mb-1">Preguntas que ayudan a decidir:</p>
+        <ul>
+            <li>Métodos: ¿quiero <strong>un array</strong>, <strong>un elemento</strong>, <strong>un número</strong>, <strong>sí/no</strong>, o solo <strong>hacer algo</strong> con cada uno?</li>
+            <li>Eventos: ¿<strong>qué</strong> tengo que detectar (clic, tecla, mouse, foco, texto que cambia)? ¿<strong>dónde</strong> escucho (el elemento, el padre, el <code>document</code>)?</li>
+        </ul>
+
+        <h3 class="h5 mt-4">Archivos</h3>
+        <ul class="list-group mb-3">
+            <li class="list-group-item"><code>plantilla.html</code> ya tiene los datos (<code>campeones</code> y <code>modos</code>), el HTML y el CSS. <strong>Solo escribís JS</strong>, al final, donde dice <code>TU CÓDIGO ACÁ</code>.</li>
+            <li class="list-group-item">Copiá la plantilla tres veces: <code>parte-1.html</code>, <code>parte-2.html</code> y <code>parte-3.html</code>.</li>
+            <li class="list-group-item">El CSS ya está hecho. Para mostrar u ocultar cosas, agregá o sacá estas clases:</li>
+        </ul>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark">
+                    <tr><th>Clase</th><th>En qué elemento</th><th>Qué hace</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>abierto</code></td><td><code>.submenu-juegos</code>, <code>.submenu-mas</code></td><td>Muestra el submenú</td></tr>
+                    <tr><td><code>abierto</code></td><td><code>.buscador</code></td><td>Expande el input de la lupa</td></tr>
+                    <tr><td><code>activo</code></td><td><code>.modo</code>, botones de <code>.roles</code></td><td>Lo resalta</td></tr>
+                    <tr><td><code>seleccionado</code></td><td>un <code>li</code> de la lista o de la grilla</td><td>Lo marca con borde dorado</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="mb-0"><strong>Dificultad:</strong>
+            <span class="badge bg-success">★ fácil</span>
+            <span class="badge bg-warning text-dark">★★ media</span>
+            <span class="badge bg-danger">★★★ difícil</span>
+        </p>
+    </section>
+
+    <!-- Parte 1 -->
+    <section id="parte-1" class="mb-4">
+        <h2 class="h3 border-bottom border-warning border-3 pb-2 mb-3">Parte 1: Métodos <small class="text-body-secondary fs-6">(en consola)</small></h2>
+        <p>Todo se resuelve con <code>console.log</code>. No toques el HTML. Algunos ejercicios vienen <strong>de a pares a propósito</strong>: se parecen, pero la respuesta es distinta.</p>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>1.1 Nombres para el menú</strong><span class="badge bg-success">★</span></div>
+            <div class="card-body">
+                <p>El menú desplegable de campeones necesita un array con <strong>solo los nombres</strong>: <code>["Ahri", "Garen", ...]</code>.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>1.2 Lista en consola</strong><span class="badge bg-success">★</span></div>
+            <div class="card-body">
+                <p>Mostrá en consola una línea por campeón con el formato <code>Ahri (Mago)</code>. No necesitás guardar nada.</p>
+                <div class="alert alert-warning font-monospace py-2">// Decisión:</div>
+                <blockquote class="border-start border-4 border-secondary ps-3 text-body-secondary mb-0">Comparalo con 1.1. ¿Qué pasa si guardás en una variable el resultado del método que usaste acá?</blockquote>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>1.3 Todos los magos</strong><span class="badge bg-success">★</span></div>
+            <div class="card-body">
+                <p>Queremos todos los campeones con rol <code>"Mago"</code>.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>1.4 El precio de Jinx</strong><span class="badge bg-success">★</span></div>
+            <div class="card-body">
+                <p>Queremos mostrar en consola <strong>el precio</strong> de Jinx: <code>4800</code>.</p>
+                <div class="alert alert-warning font-monospace py-2">// Decisión:</div>
+                <blockquote class="border-start border-4 border-secondary ps-3 text-body-secondary mb-0">Comparalo con 1.3. Probá resolverlo con el método de 1.3: ¿qué sale en <code>.precio</code>? ¿Por qué?</blockquote>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>1.5 El precio de Teemo</strong><span class="badge bg-warning text-dark">★★</span></div>
+            <div class="card-body">
+                <p>Hacé lo mismo que en 1.4, pero con "Teemo". Teemo <strong>no está</strong> en la lista. Si no existe, mostrá <code>"No tenemos a Teemo"</code>. El programa no puede romperse.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>1.6 ¿El equipo tiene tirador?</strong><span class="badge bg-warning text-dark">★★</span></div>
+            <div class="card-body">
+                <pre class="bg-dark text-light p-3 rounded small"><code>const rolesDelEquipo = ["Mago", "Tanque", "Soporte"];</code></pre>
+                <p>¿Hay un <code>"Tirador"</code> en el equipo? La respuesta es <code>true</code> o <code>false</code>.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>1.7 ¿Hay algún difícil barato?</strong><span class="badge bg-warning text-dark">★★</span></div>
+            <div class="card-body">
+                <p>¿Hay <strong>algún</strong> campeón de dificultad 3 que cueste <strong>menos de 5000</strong> EA? La respuesta es <code>true</code> o <code>false</code>.</p>
+                <div class="alert alert-warning font-monospace py-2">// Decisión:</div>
+                <blockquote class="border-start border-4 border-secondary ps-3 text-body-secondary mb-0">Comparalo con 1.6. ¿Por qué acá no sirve el mismo método? Probá <code>campeones.includes("Zed")</code> y explicá el resultado.</blockquote>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>1.8 Del más barato al más caro</strong><span class="badge bg-warning text-dark">★★</span></div>
+            <div class="card-body">
+                <p>Mostrá los campeones ordenados por precio, de menor a mayor. <strong>Después</strong>, mostrá <code>campeones[0].nombre</code>: tiene que seguir siendo <code>"Ahri"</code>.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>1.9 Comprar todos los asesinos</strong><span class="badge bg-warning text-dark">★★</span></div>
+            <div class="card-body">
+                <p>¿Cuántas EA necesitás para comprar <strong>todos los asesinos</strong>? Tiene que dar un número.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>1.10 El más caro</strong><span class="badge bg-danger">★★★</span></div>
+            <div class="card-body">
+                <p>Queremos <strong>el campeón</strong> (el objeto entero, no solo el número) más caro de la lista.</p>
+                <div class="alert alert-warning font-monospace py-2">// Decisión:</div>
+                <blockquote class="border-start border-4 border-secondary ps-3 text-body-secondary mb-0">Comparalo con 1.9. Usás el mismo método, pero ¿qué guarda el acumulador en cada caso? ¿Con qué valor arranca?</blockquote>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parte 2 -->
+    <section id="parte-2" class="mb-4">
+        <h2 class="h3 border-bottom border-warning border-3 pb-2 mb-3">Parte 2: Eventos <small class="text-body-secondary fs-6">(componentes de la home de LoL)</small></h2>
+        <p>Trabajá en <code>parte-2.html</code>. Cada ejercicio usa una parte de la plantilla.</p>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>2.1 Submenú "Juegos" con el mouse</strong><span class="badge bg-success">★</span></div>
+            <div class="card-body">
+                <p>Al pasar el mouse por "Juegos", se abre su submenú. Al salir, se cierra. <strong>Tiene que quedar abierto mientras el mouse baja por las opciones del submenú.</strong></p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión: (qué evento y en qué elemento)</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>2.2 Submenú "Más" con clic</strong><span class="badge bg-warning text-dark">★★</span></div>
+            <div class="card-body">
+                <p>El botón "Más" abre y cierra su submenú con cada clic (en el celular no hay mouse). Además, <strong>un clic en cualquier otro lugar de la página lo cierra</strong>.</p>
+                <div class="alert alert-warning font-monospace py-2">// Decisión: (para abrir/cerrar)<br>// Decisión: (para el clic afuera)</div>
+                <blockquote class="border-start border-4 border-secondary ps-3 text-body-secondary mb-0">Pista: probalo. Si el submenú se abre y se cierra en el mismo clic, pensá en el burbujeo.</blockquote>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>2.3 La lupa</strong><span class="badge bg-warning text-dark">★★</span></div>
+            <div class="card-body">
+                <p>Al hacer clic en la lupa, el input se expande y queda listo para escribir (el cursor adentro, sin hacer otro clic). Cuando el usuario sale del input <strong>y no escribió nada</strong>, se cierra.</p>
+                <div class="alert alert-warning font-monospace py-2">// Decisión: (para abrir)<br>// Decisión: (para cerrar)</div>
+                <blockquote class="border-start border-4 border-secondary ps-3 text-body-secondary mb-0">Pista: <code>entrada.focus()</code> pone el cursor en un input.</blockquote>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>2.4 Escape cierra la búsqueda</strong><span class="badge bg-success">★</span></div>
+            <div class="card-body">
+                <p>Si el usuario aprieta Escape mientras escribe en el buscador, se borra lo escrito y el buscador se cierra.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>2.5 Lista de campeones con un solo listener</strong><span class="badge bg-warning text-dark">★★</span></div>
+            <div class="card-body">
+                <ol>
+                    <li>Pintá en <code>.lista-campeones</code> un <code>li</code> por campeón, con este HTML adentro:<br>
+                        <code>&lt;span class="emoji"&gt;🦊&lt;/span&gt; &lt;span class="nombre"&gt;Ahri&lt;/span&gt;</code></li>
+                    <li>Al hacer clic en un campeón, mostrá en <code>.info-campeon</code> su rol, dificultad y precio, y marcá ese <code>li</code> con la clase <code>seleccionado</code>.</li>
+                    <li>Usá <strong>un solo</strong> <code>addEventListener</code> para toda la lista.</li>
+                </ol>
+                <p>Para saber qué campeón se tocó, usá el <strong>texto</strong> del <code>span.nombre</code> de esa fila.</p>
+                <div class="alert alert-warning font-monospace py-2">// Decisión:</div>
+                <div class="alert alert-primary mb-0"><strong>Respondé en un comentario:</strong> si hacés clic justo sobre el emoji, ¿qué es <code>event.target</code>? ¿Y <code>event.currentTarget</code>?</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>2.6 Filtro en vivo</strong><span class="badge bg-warning text-dark">★★</span></div>
+            <div class="card-body">
+                <p>Mientras el usuario escribe en <code>.filtro-lista</code>, la lista muestra solo los campeones cuyo nombre incluye ese texto (sin importar mayúsculas). El clic del 2.5 tiene que seguir funcionando después de filtrar.</p>
+                <div class="alert alert-warning font-monospace py-2">// Decisión: (qué evento)<br>// Decisión: (qué método para mostrar solo algunos)</div>
+                <blockquote class="border-start border-4 border-secondary ps-3 text-body-secondary mb-0">¿Por qué no <code>change</code>? ¿Y por qué no <code>keydown</code>? Probá los dos y anotá qué pasa.</blockquote>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>2.7 Forma de jugar</strong><span class="badge bg-warning text-dark">★★</span></div>
+            <div class="card-body">
+                <p>Al pasar el mouse por cada tarjeta <code>.modo</code>, se muestra en <code>.descripcion-modo</code> la descripción de ese modo (del array <code>modos</code>) y la tarjeta se marca con <code>activo</code>. Al salir, vuelve el texto original.</p>
+                <div class="alert alert-warning font-monospace py-2">// Decisión:</div>
+                <blockquote class="border-start border-4 border-secondary ps-3 text-body-secondary mb-0">Pista: <code>forEach</code> te pasa la posición como segundo parámetro: <code>tarjetas.forEach((tarjeta, indice) =&gt; ...)</code>. Las tarjetas están en el mismo orden que <code>modos</code>.<br>¿Se puede hacer con un solo listener en <code>.modos</code>? Probalo y explicá qué pasa.</blockquote>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parte 3 -->
+    <section id="parte-3" class="mb-4">
+        <h2 class="h3 border-bottom border-warning border-3 pb-2 mb-3">Parte 3: Integrador "Elige tu campeón" <span class="badge bg-danger fs-6 align-middle">★★★</span></h2>
+        <p>Trabajá en <code>parte-3.html</code>, en la sección <code>.elige</code>. Antes de programar, escribí <strong>todas</strong> las decisiones juntas al principio del script.</p>
+
+        <div class="card border-dark shadow-sm mb-3">
+            <div class="card-header bg-dark text-white"><strong>Estado sugerido</strong></div>
+            <div class="card-body">
+                <pre class="bg-dark text-light p-3 rounded small mb-0"><code>let rolActivo = "Todos";
+let busqueda = "";
+let seleccionado = campeones[0];</code></pre>
+            </div>
+        </div>
+
+        <div class="list-group shadow-sm mb-3">
+            <div class="list-group-item">
+                <h3 class="h6 fw-bold mb-2"><span class="badge text-bg-dark me-1">3.1</span> Pintar la grilla</h3>
+                <p class="mb-2">Un <code>li</code> por campeón en <code>.grilla</code>, con el emoji, <code>&lt;span class="nombre"&gt;</code> y el rol y precio. El campeón seleccionado lleva la clase <code>seleccionado</code>.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+            <div class="list-group-item">
+                <h3 class="h6 fw-bold mb-2"><span class="badge text-bg-dark me-1">3.2</span> Filtrar por rol</h3>
+                <p class="mb-2">Al hacer clic en un botón de <code>.roles</code>, se muestran solo los campeones de ese rol ("Todos" muestra todos). El botón elegido lleva la clase <code>activo</code> y los demás no. Usá <strong>un solo listener</strong> para los 7 botones.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión: (evento y dónde escuchar)<br>// Decisión: (método para quedarte con los de ese rol)</div>
+            </div>
+            <div class="list-group-item">
+                <h3 class="h6 fw-bold mb-2"><span class="badge text-bg-dark me-1">3.3</span> Búsqueda en vivo</h3>
+                <p class="mb-2">Mientras escribe en <code>.buscador-elige</code>, la grilla se filtra por nombre. <strong>Tiene que combinarse con el rol</strong>: si está activo "Mago" y escribís "l", aparece solo Lux.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+            <div class="list-group-item">
+                <h3 class="h6 fw-bold mb-2"><span class="badge text-bg-dark me-1">3.4</span> Elegir campeón</h3>
+                <p class="mb-2">Al hacer clic en un campeón de la grilla, pasa a ser el seleccionado: cambian la imagen grande (<code>.imagen-principal</code>), el nombre, el rol y el <strong>color de fondo del banner</strong> (<code>banner.style.backgroundColor = campeon.fondo</code>).</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+            <div class="list-group-item">
+                <h3 class="h6 fw-bold mb-2"><span class="badge text-bg-dark me-1">3.5</span> Total de los visibles</h3>
+                <p class="mb-2">Debajo de la grilla, mostrá cuántos campeones se ven y <strong>cuánto suman en EA los que se ven</strong> (no todos: si filtrás por "Asesino", tiene que dar 11100 EA).</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+
+        <div class="alert alert-info mb-0">
+            <strong>Pista general:</strong> un estado, un <code>renderizar()</code> que pinta todo a partir del estado, y eventos que solo cambian el estado y llaman a <code>renderizar()</code>.
+        </div>
+    </section>
+
+    <!-- Entrega -->
+    <section id="entrega" class="alert alert-success shadow-sm">
+        <h2 class="h4 alert-heading">✅ Entrega</h2>
+        <ul class="mb-2">
+            <li><code>parte-1.html</code>, <code>parte-2.html</code> y <code>parte-3.html</code>, cada uno con <strong>todas</strong> las líneas <code>// Decisión:</code> completas.</li>
+        </ul>
+        <hr>
+        <p class="mb-0">Una decisión bien explicada con el código incompleto vale más que código que funciona sin decisión.</p>
+    </section>
+
+    <!-- Criterios de evaluación -->
+    <section id="evaluacion" class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h2 class="h5 mb-0">📊 Criterios de evaluación</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr><th>Criterio</th><th class="text-center">Peso</th><th>Se valora</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Decisiones justificadas</strong></td><td class="text-center"><span class="badge text-bg-warning">40 %</span></td><td>Cada <code>// Decisión:</code> indica el método o evento correcto y explica el porqué (qué devuelve, qué detecta, dónde se escucha).</td></tr>
+                        <tr><td><strong>Funcionamiento</strong></td><td class="text-center"><span class="badge text-bg-warning">40 %</span></td><td>El código hace lo que pide el escenario, sin errores en consola, incluidos los casos límite (campeón inexistente, lista filtrada, array original intacto).</td></tr>
+                        <tr><td><strong>Calidad del código</strong></td><td class="text-center"><span class="badge text-bg-warning">20 %</span></td><td>Nombres claros, un solo listener donde se pide delegación, separación entre estado, <code>renderizar()</code> y eventos.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap usado en esta página -->
+    <footer class="text-body-secondary small border-top pt-3">
+        <p class="mb-1"><strong>¿Te diste cuenta?</strong> Esta consigna está hecha con Bootstrap. Abrí el inspector (F12) y buscá estos componentes y clases:</p>
+        <p class="mb-0">
+            <span class="badge text-bg-secondary">card</span>
+            <span class="badge text-bg-secondary">alert</span>
+            <span class="badge text-bg-secondary">badge</span>
+            <span class="badge text-bg-secondary">nav-pills</span>
+            <span class="badge text-bg-secondary">collapse</span>
+            <span class="badge text-bg-secondary">table-striped</span>
+            <span class="badge text-bg-secondary">list-group</span>
+            <span class="badge text-bg-secondary">row / col-md-*</span>
+            <span class="badge text-bg-secondary">d-flex</span>
+            <span class="badge text-bg-secondary">shadow-sm</span>
+        </p>
+    </footer>
+
+</div>
+<!-- CONTENIDO PARA MOODLE: copiar hasta aquí -->
+<script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
