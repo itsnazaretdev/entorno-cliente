@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <!--
     Esta página usa Bootstrap 5.3.3 SOLO para el aspecto (clases de diseño).
     Todo el comportamiento (abrir submenús, la lupa, filtros, selección) lo escriben
@@ -6,224 +6,444 @@
     No se usa el JS de Bootstrap.
 -->
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TP ¿Qué uso y por qué?</title>
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <style>
-        /* Este CSS va DESPUÉS de Bootstrap: las clases de estado (abierto, activo, seleccionado) mandan. */
+      /* Este CSS va DESPUÉS de Bootstrap: las clases de estado (abierto, activo, seleccionado) mandan. */
 
-        /* Cabecera */
-        .nav > li { position: relative; }
+      /* Cabecera */
+      .nav > li {
+        position: relative;
+      }
 
-        /* Submenús: ocultos por defecto (como .dropdown-menu), visibles con la clase "abierto".
+      /* Submenús: ocultos por defecto (como .dropdown-menu), visibles con la clase "abierto".
            top: 100% y sin margen: el submenú queda pegado al menú, sin hueco para el mouse. */
-        .submenu { top: 100%; left: 0; margin: 0; min-width: 220px; }
-        .submenu.abierto { display: block; }
+      .submenu {
+        top: 100%;
+        left: 0;
+        margin: 0;
+        min-width: 220px;
+      }
+      .submenu.abierto {
+        display: block;
+      }
 
-        /* Lupa: el input mide 0 por defecto, y se expande con la clase "abierto" en .buscador */
-        .buscador .entrada-busqueda { width: 0; padding: 0; border: none; transition: width 0.3s; }
-        .buscador.abierto .entrada-busqueda { width: 200px; padding: 0.25rem 0.5rem; border: 1px solid var(--bs-warning); }
+      /* Lupa: el input mide 0 por defecto, y se expande con la clase "abierto" en .buscador */
+      .buscador .entrada-busqueda {
+        width: 0;
+        padding: 0;
+        border: none;
+        transition: width 0.3s;
+      }
+      .buscador.abierto .entrada-busqueda {
+        width: 200px;
+        padding: 0.25rem 0.5rem;
+        border: 1px solid var(--bs-warning);
+      }
 
-        /* Forma de jugar */
-        .modo { flex: 1 1 180px; cursor: default; transition: border-color 0.2s, background-color 0.2s; }
-        .modo.activo { border-color: var(--bs-warning); background-color: var(--bs-warning-bg-subtle); }
+      /* Forma de jugar */
+      .modo {
+        flex: 1 1 180px;
+        cursor: default;
+        transition:
+          border-color 0.2s,
+          background-color 0.2s;
+      }
+      .modo.activo {
+        border-color: var(--bs-warning);
+        background-color: var(--bs-warning-bg-subtle);
+      }
 
-        /* Lista de campeones (parte 2): los li los crea el JS, por eso se estilan desde acá */
-        .lista-campeones li { padding: 0.5rem 1rem; border: 1px solid var(--bs-border-color); margin-top: -1px; background-color: var(--bs-body-bg); cursor: pointer; }
-        .lista-campeones li:first-child { margin-top: 0; border-top-left-radius: var(--bs-border-radius); border-top-right-radius: var(--bs-border-radius); }
-        .lista-campeones li:last-child { border-bottom-left-radius: var(--bs-border-radius); border-bottom-right-radius: var(--bs-border-radius); }
-        .lista-campeones li:hover, .grilla li:hover { background-color: var(--bs-tertiary-bg); }
-        .info-campeon:empty { display: none; }
-        .emoji { font-size: 24px; }
+      /* Lista de campeones (parte 2): los li los crea el JS, por eso se estilan desde acá */
+      .lista-campeones li {
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--bs-border-color);
+        margin-top: -1px;
+        background-color: var(--bs-body-bg);
+        cursor: pointer;
+        list-style: none;
+      }
+      .lista-campeones li:first-child {
+        margin-top: 0;
+        border-top-left-radius: var(--bs-border-radius);
+        border-top-right-radius: var(--bs-border-radius);
+      }
+      .lista-campeones li:last-child {
+        border-bottom-left-radius: var(--bs-border-radius);
+        border-bottom-right-radius: var(--bs-border-radius);
+      }
+      .lista-campeones li:hover,
+      .grilla li:hover {
+        background-color: var(--bs-tertiary-bg);
+      }
+      .info-campeon:empty {
+        display: none;
+      }
+      .emoji {
+        font-size: 24px;
+      }
 
-        /* Elige tu campeón (parte 3). El fondo del banner lo cambia el JS: no usar clases bg-* acá. */
-        .banner { background-color: #1e2328; transition: background-color 0.4s; }
-        .imagen-principal { font-size: 120px; line-height: 1; }
-        .roles button.activo { background-color: var(--bs-warning); border-color: var(--bs-warning); color: #000; }
-        .grilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; list-style: none; padding: 0; }
-        .grilla li { display: flex; flex-direction: column; align-items: center; padding: 12px; border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius-lg); background-color: var(--bs-body-bg); box-shadow: var(--bs-box-shadow-sm); cursor: pointer; }
-        .detalle { font-size: 12px; color: var(--bs-secondary-color); }
+      /* Elige tu campeón (parte 3). El fondo del banner lo cambia el JS: no usar clases bg-* acá. */
+      .banner {
+        background-color: #1e2328;
+        transition: background-color 0.4s;
+      }
+      .imagen-principal {
+        font-size: 120px;
+        line-height: 1;
+      }
+      .roles button.activo {
+        background-color: var(--bs-warning);
+        border-color: var(--bs-warning);
+        color: #000;
+      }
+      .grilla {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 12px;
+        list-style: none;
+        padding: 0;
+      }
+      .grilla li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 12px;
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius-lg);
+        background-color: var(--bs-body-bg);
+        box-shadow: var(--bs-box-shadow-sm);
+        cursor: pointer;
+      }
+      .detalle {
+        font-size: 12px;
+        color: var(--bs-secondary-color);
+      }
 
-        /* Seleccionado: al final y con li para ganarle a los estilos de arriba (incluido :hover) */
-        .lista-campeones li.seleccionado, .grilla li.seleccionado { box-shadow: inset 0 0 0 2px var(--bs-warning); background-color: var(--bs-warning-bg-subtle); }
+      /* Seleccionado: al final y con li para ganarle a los estilos de arriba (incluido :hover) */
+      .lista-campeones li.seleccionado,
+      .grilla li.seleccionado {
+        box-shadow: inset 0 0 0 2px var(--bs-warning);
+        background-color: var(--bs-warning-bg-subtle);
+      }
     </style>
-</head>
-<body class="bg-light">
-
+  </head>
+  <body class="bg-light">
     <!-- ===== Cabecera (parte 2: ejercicios 2.1 a 2.4) ===== -->
-    <header class="cabecera d-flex align-items-center gap-4 px-4 py-2 bg-dark shadow-sm">
-        <span class="logo fw-bold text-warning">⚔️ LoL</span>
+    <header
+      class="cabecera d-flex align-items-center gap-4 px-4 py-2 bg-dark shadow-sm"
+    >
+      <span class="logo fw-bold text-warning">⚔️ LoL</span>
 
-        <ul class="nav">
-            <li class="menu-juegos">
-                <a class="nav-link link-light" href="#">Juegos ▾</a>
-                <ul class="submenu submenu-juegos dropdown-menu shadow-sm">
-                    <li><a class="dropdown-item" href="#">League of Legends</a></li>
-                    <li><a class="dropdown-item" href="#">Teamfight Tactics</a></li>
-                    <li><a class="dropdown-item" href="#">Wild Rift</a></li>
-                    <li><a class="dropdown-item" href="#">Legends of Runeterra</a></li>
-                </ul>
-            </li>
-            <li><a class="nav-link link-light" href="#">Noticias</a></li>
-            <li><a class="nav-link link-light" href="#">Parches</a></li>
-            <li class="menu-mas">
-                <button class="btn-mas nav-link link-light">Más ▾</button>
-                <ul class="submenu submenu-mas dropdown-menu shadow-sm">
-                    <li><a class="dropdown-item" href="#">Soporte</a></li>
-                    <li><a class="dropdown-item" href="#">Esports</a></li>
-                    <li><a class="dropdown-item" href="#">Universo</a></li>
-                </ul>
-            </li>
-        </ul>
+      <ul class="nav">
+        <li class="menu-juegos">
+          <a class="nav-link link-light" href="#">Juegos ▾</a>
+          <ul class="submenu submenu-juegos dropdown-menu shadow-sm">
+            <li><a class="dropdown-item" href="#">League of Legends</a></li>
+            <li><a class="dropdown-item" href="#">Teamfight Tactics</a></li>
+            <li><a class="dropdown-item" href="#">Wild Rift</a></li>
+            <li><a class="dropdown-item" href="#">Legends of Runeterra</a></li>
+          </ul>
+        </li>
+        <li><a class="nav-link link-light" href="#">Noticias</a></li>
+        <li><a class="nav-link link-light" href="#">Parches</a></li>
+        <li class="menu-mas">
+          <button class="btn-mas nav-link link-light">Más ▾</button>
+          <ul class="submenu submenu-mas dropdown-menu shadow-sm">
+            <li><a class="dropdown-item" href="#">Soporte</a></li>
+            <li><a class="dropdown-item" href="#">Esports</a></li>
+            <li><a class="dropdown-item" href="#">Universo</a></li>
+          </ul>
+        </li>
+      </ul>
 
-        <div class="buscador ms-auto d-flex align-items-center gap-2">
-            <button class="btn-lupa btn btn-sm btn-outline-warning" aria-label="Buscar">🔍</button>
-            <input type="text" class="entrada-busqueda form-control form-control-sm" placeholder="Buscar...">
-        </div>
+      <div class="buscador ms-auto d-flex align-items-center gap-2">
+        <button
+          class="btn-lupa btn btn-sm btn-outline-warning"
+          aria-label="Buscar"
+        >
+          🔍
+        </button>
+        <input
+          type="text"
+          class="entrada-busqueda form-control form-control-sm"
+          placeholder="Buscar..."
+        />
+      </div>
     </header>
 
-    <main class="container py-4" style="max-width: 960px;">
+    <main class="container py-4" style="max-width: 960px">
+      <!-- ===== Forma de jugar (parte 2: ejercicio 2.7) ===== -->
+      <section class="forma-de-jugar card shadow-sm mb-4">
+        <div
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <h2 class="h5 mb-0">Elegí tu forma de jugar</h2>
+          <span class="badge text-bg-secondary">2.7</span>
+        </div>
+        <div class="card-body">
+          <div class="modos d-flex flex-wrap gap-3 mb-3">
+            <article class="modo card p-3">
+              <h3 class="h6 mb-0">Grieta del Invocador</h3>
+            </article>
+            <article class="modo card p-3">
+              <h3 class="h6 mb-0">ARAM</h3>
+            </article>
+            <article class="modo card p-3">
+              <h3 class="h6 mb-0">Teamfight Tactics</h3>
+            </article>
+          </div>
+          <p class="descripcion-modo alert alert-secondary mb-0">
+            Pasá el mouse por un modo para ver de qué se trata.
+          </p>
+        </div>
+      </section>
 
-        <!-- ===== Forma de jugar (parte 2: ejercicio 2.7) ===== -->
-        <section class="forma-de-jugar card shadow-sm mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h2 class="h5 mb-0">Elegí tu forma de jugar</h2>
-                <span class="badge text-bg-secondary">2.7</span>
+      <!-- ===== Lista de campeones (parte 2: ejercicios 2.5 y 2.6) ===== -->
+      <section class="seccion-lista card shadow-sm mb-4">
+        <div
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <h2 class="h5 mb-0">Campeones</h2>
+          <span class="badge text-bg-secondary">2.5 · 2.6</span>
+        </div>
+        <div class="card-body">
+          <input
+            type="text"
+            class="filtro-lista form-control mb-3"
+            placeholder="Filtrar por nombre..."
+          />
+          <ul class="lista-campeones list-group"></ul>
+          <p class="info-campeon alert alert-warning mt-3 mb-0"></p>
+        </div>
+      </section>
+
+      <!-- ===== Elige tu campeón (parte 3) ===== -->
+      <section class="elige card shadow-sm mb-4">
+        <div
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <h2 class="h5 mb-0">Elige tu campeón</h2>
+          <span class="badge bg-warning text-dark">Parte 3</span>
+        </div>
+        <div class="card-body">
+          <div
+            class="banner d-flex align-items-center gap-4 p-4 rounded-3 text-white shadow-sm"
+          >
+            <div class="imagen-principal">🦊</div>
+            <div>
+              <h2 class="nombre-principal h3 text-warning">Ahri</h2>
+              <p class="rol-principal mb-0">Mago</p>
             </div>
-            <div class="card-body">
-                <div class="modos d-flex flex-wrap gap-3 mb-3">
-                    <article class="modo card p-3"><h3 class="h6 mb-0">Grieta del Invocador</h3></article>
-                    <article class="modo card p-3"><h3 class="h6 mb-0">ARAM</h3></article>
-                    <article class="modo card p-3"><h3 class="h6 mb-0">Teamfight Tactics</h3></article>
-                </div>
-                <p class="descripcion-modo alert alert-secondary mb-0">Pasá el mouse por un modo para ver de qué se trata.</p>
-            </div>
-        </section>
+          </div>
 
-        <!-- ===== Lista de campeones (parte 2: ejercicios 2.5 y 2.6) ===== -->
-        <section class="seccion-lista card shadow-sm mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h2 class="h5 mb-0">Campeones</h2>
-                <span class="badge text-bg-secondary">2.5 · 2.6</span>
-            </div>
-            <div class="card-body">
-                <input type="text" class="filtro-lista form-control mb-3" placeholder="Filtrar por nombre...">
-                <ul class="lista-campeones list-group"></ul>
-                <p class="info-campeon alert alert-warning mt-3 mb-0"></p>
-            </div>
-        </section>
+          <div class="roles d-flex flex-wrap gap-2 my-3">
+            <button class="btn btn-sm btn-outline-warning text-dark activo">
+              Todos
+            </button>
+            <button class="btn btn-sm btn-outline-warning text-dark">
+              Asesino
+            </button>
+            <button class="btn btn-sm btn-outline-warning text-dark">
+              Mago
+            </button>
+            <button class="btn btn-sm btn-outline-warning text-dark">
+              Tirador
+            </button>
+            <button class="btn btn-sm btn-outline-warning text-dark">
+              Tanque
+            </button>
+            <button class="btn btn-sm btn-outline-warning text-dark">
+              Soporte
+            </button>
+            <button class="btn btn-sm btn-outline-warning text-dark">
+              Luchador
+            </button>
+          </div>
 
-        <!-- ===== Elige tu campeón (parte 3) ===== -->
-        <section class="elige card shadow-sm mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h2 class="h5 mb-0">Elige tu campeón</h2>
-                <span class="badge bg-warning text-dark">Parte 3</span>
-            </div>
-            <div class="card-body">
-                <div class="banner d-flex align-items-center gap-4 p-4 rounded-3 text-white shadow-sm">
-                    <div class="imagen-principal">🦊</div>
-                    <div>
-                        <h2 class="nombre-principal h3 text-warning">Ahri</h2>
-                        <p class="rol-principal mb-0">Mago</p>
-                    </div>
-                </div>
+          <input
+            type="text"
+            class="buscador-elige form-control mb-3"
+            placeholder="Buscar campeón..."
+          />
 
-                <div class="roles d-flex flex-wrap gap-2 my-3">
-                    <button class="btn btn-sm btn-outline-warning text-dark activo">Todos</button>
-                    <button class="btn btn-sm btn-outline-warning text-dark">Asesino</button>
-                    <button class="btn btn-sm btn-outline-warning text-dark">Mago</button>
-                    <button class="btn btn-sm btn-outline-warning text-dark">Tirador</button>
-                    <button class="btn btn-sm btn-outline-warning text-dark">Tanque</button>
-                    <button class="btn btn-sm btn-outline-warning text-dark">Soporte</button>
-                    <button class="btn btn-sm btn-outline-warning text-dark">Luchador</button>
-                </div>
+          <ul class="grilla"></ul>
 
-                <input type="text" class="buscador-elige form-control mb-3" placeholder="Buscar campeón...">
-
-                <ul class="grilla"></ul>
-
-                <p class="mb-0">Campeones visibles: <strong class="cantidad badge text-bg-dark">0</strong> · Total: <strong class="total badge bg-warning text-dark">0 EA</strong></p>
-            </div>
-        </section>
-
+          <p class="mb-0">
+            Campeones visibles:
+            <strong class="cantidad badge text-bg-dark">0</strong> · Total:
+            <strong class="total badge bg-warning text-dark">0 EA</strong>
+          </p>
+        </div>
+      </section>
     </main>
 
     <script>
-        // ===== DATOS (no modificar) =====
-        const campeones = [
-            { id: 1, nombre: "Ahri", rol: "Mago", dificultad: 2, precio: 4800, imagen: "🦊", fondo: "#3b1f4a" },
-            { id: 2, nombre: "Garen", rol: "Luchador", dificultad: 1, precio: 450, imagen: "⚔️", fondo: "#1f2f4a" },
-            { id: 3, nombre: "Jinx", rol: "Tirador", dificultad: 2, precio: 4800, imagen: "🚀", fondo: "#3a1f3f" },
-            { id: 4, nombre: "Leona", rol: "Tanque", dificultad: 1, precio: 3150, imagen: "☀️", fondo: "#4a3a1f" },
-            { id: 5, nombre: "Lux", rol: "Mago", dificultad: 1, precio: 3150, imagen: "✨", fondo: "#2a3f5a" },
-            { id: 6, nombre: "Yasuo", rol: "Luchador", dificultad: 3, precio: 6300, imagen: "🌪️", fondo: "#1f3a3a" },
-            { id: 7, nombre: "Zed", rol: "Asesino", dificultad: 3, precio: 4800, imagen: "🥷", fondo: "#3a1f1f" },
-            { id: 8, nombre: "Thresh", rol: "Soporte", dificultad: 3, precio: 4800, imagen: "⛓️", fondo: "#1f3a2a" },
-            { id: 9, nombre: "Malphite", rol: "Tanque", dificultad: 1, precio: 1350, imagen: "🪨", fondo: "#3a3530" },
-            { id: 10, nombre: "Caitlyn", rol: "Tirador", dificultad: 2, precio: 4800, imagen: "🎯", fondo: "#2a2a4a" },
-            { id: 11, nombre: "Akali", rol: "Asesino", dificultad: 3, precio: 6300, imagen: "🗡️", fondo: "#2a1f3a" },
-            { id: 12, nombre: "Soraka", rol: "Soporte", dificultad: 1, precio: 450, imagen: "🌙", fondo: "#1f2a4a" }
-        ];
+      // ===== DATOS (no modificar) =====
+      const campeones = [
+          { id: 1, nombre: "Ahri", rol: "Mago", dificultad: 2, precio: 4800, imagen: "🦊", fondo: "#3b1f4a" },
+          { id: 2, nombre: "Garen", rol: "Luchador", dificultad: 1, precio: 450, imagen: "⚔️", fondo: "#1f2f4a" },
+          { id: 3, nombre: "Jinx", rol: "Tirador", dificultad: 2, precio: 4800, imagen: "🚀", fondo: "#3a1f3f" },
+          { id: 4, nombre: "Leona", rol: "Tanque", dificultad: 1, precio: 3150, imagen: "☀️", fondo: "#4a3a1f" },
+          { id: 5, nombre: "Lux", rol: "Mago", dificultad: 1, precio: 3150, imagen: "✨", fondo: "#2a3f5a" },
+          { id: 6, nombre: "Yasuo", rol: "Luchador", dificultad: 3, precio: 6300, imagen: "🌪️", fondo: "#1f3a3a" },
+          { id: 7, nombre: "Zed", rol: "Asesino", dificultad: 3, precio: 4800, imagen: "🥷", fondo: "#3a1f1f" },
+          { id: 8, nombre: "Thresh", rol: "Soporte", dificultad: 3, precio: 4800, imagen: "⛓️", fondo: "#1f3a2a" },
+          { id: 9, nombre: "Malphite", rol: "Tanque", dificultad: 1, precio: 1350, imagen: "🪨", fondo: "#3a3530" },
+          { id: 10, nombre: "Caitlyn", rol: "Tirador", dificultad: 2, precio: 4800, imagen: "🎯", fondo: "#2a2a4a" },
+          { id: 11, nombre: "Akali", rol: "Asesino", dificultad: 3, precio: 6300, imagen: "🗡️", fondo: "#2a1f3a" },
+          { id: 12, nombre: "Soraka", rol: "Soporte", dificultad: 1, precio: 450, imagen: "🌙", fondo: "#1f2a4a" }
+      ];
 
-        // Mismo orden que las tarjetas .modo del HTML
-        const modos = [
-            { nombre: "Grieta del Invocador", descripcion: "El modo clásico: 5 contra 5, tres líneas y un objetivo: destruir el Nexo enemigo." },
-            { nombre: "ARAM", descripcion: "Todos al centro: una sola línea, campeón al azar y peleas sin parar." },
-            { nombre: "Teamfight Tactics", descripcion: "Armá tu equipo, ubicá a tus campeones en el tablero y mirá cómo pelean solos." }
-        ];
+      // Mismo orden que las tarjetas .modo del HTML
+      const modos = [
+          { nombre: "Grieta del Invocador", descripcion: "El modo clásico: 5 contra 5, tres líneas y un objetivo: destruir el Nexo enemigo." },
+          { nombre: "ARAM", descripcion: "Todos al centro: una sola línea, campeón al azar y peleas sin parar." },
+          { nombre: "Teamfight Tactics", descripcion: "Armá tu equipo, ubicá a tus campeones en el tablero y mirá cómo pelean solos." }
+      ];
 
-        // ===== TU CÓDIGO ACÁ =====
-        // Antes de cada ejercicio, escribí:
-        // Decisión: <método o evento>, porque <una línea con el porqué>.
-        //------------------------2.1-----------------------------
-        //Decisión: uso de mouseenter y mouseleave porque es cuando el mouse se pone encima del elemento, sin clickar
-        const menu = document.querySelector(".menu-juegos")
-        const menuJuego = document.querySelector(".submenu-juegos")
-        menu.addEventListener("mouseenter", () => {
-            menuJuego.classList.add("abierto")
+      // ===== TU CÓDIGO ACÁ =====
+      // Antes de cada ejercicio, escribí:
+      // Decisión: <método o evento>, porque <una línea con el porqué>.
+      //------------------------2.1-----------------------------
+      //Decisión: uso de mouseenter y mouseleave porque es cuando el mouse se pone encima del elemento, sin clickar
+      const menu = document.querySelector(".menu-juegos")
+      const menuJuego = document.querySelector(".submenu-juegos")
+      menu.addEventListener("mouseenter", () => {
+          menuJuego.classList.add("abierto")
+      })
+
+      menu.addEventListener("mouseleave", () => {
+          menuJuego.classList.remove("abierto")
+      })
+
+      //------------------------2.2-----------------------------
+      //Decisión: uso de click porque pide que funcione con click, además toggle para que sirva clicar y desclicar sobre "Más", y uso de stopPropagation para evitar el burbujeo del hijo al padre
+      const botonMas = document.querySelector(".btn-mas")
+      const submenuMas = document.querySelector(".submenu-mas")
+      const body = document.querySelector("body")
+
+      botonMas.addEventListener("click", (e) => {
+          submenuMas.classList.toggle("abierto")
+          e.stopPropagation()
+      })
+
+      body.addEventListener("click", () => {
+          submenuMas.classList.remove("abierto")
+      })
+
+
+      //------------------------2.3-----------------------------
+      // Decisión: (para abrir) uso primero de click para que lupa sepa que hacemos click y que el input se abra
+      // Decisión: (para cerrar) uso de blur para poder volver a cerrar el input
+      const lupa = document.querySelector(".btn-lupa")
+      const input = document.querySelector(".entrada-busqueda")
+      const buscadorDiv = document.querySelector(".buscador")
+
+
+      lupa.addEventListener("click", () => {
+          buscadorDiv.classList.add("abierto")
+          input.focus()
+
+      })
+
+      input.addEventListener("blur", () => {
+          if (input.value.trim() === "") {
+              buscadorDiv.classList.remove("abierto")
+          }
+      })
+
+      //------------------------2.4-----------------------------
+      //Decisión: uso de keydown porque el evento necesita escuchar las teclas para saber cuál presionó, en este caso Esc
+      input.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+              input.value = ""
+              buscadorDiv.classList.remove("abierto")
+              input.blur()
+          }
+      })
+
+      //------------------------2.5-----------------------------
+      //Decisión: uso de función para renderizar en la lista cada li con su correspondiente emoji y nombre, y después en el evento de click sobre la lista porque por burbujeo lee cada li, uso de closest para ver qué hijo se clicó. Y uso de find para encontrar el campeón que corresponde con el nombre que hemos sacado en la línea 268, y así poder sacar rol, dificultad y precio
+      const cardBody = document.querySelector(".card-body")
+      const listaCampeones = document.querySelector(".lista-campeones")
+      const infoCampeon = document.querySelector(".info-campeon")
+
+      function renderizarCampeon(campeones) {
+          listaCampeones.textContent = ""
+
+          campeones.map(({imagen, nombre}) => {
+              const li = document.createElement("li")
+              li.innerHTML = `
+              <span class="emoji">${imagen}</span> <span class="nombre">${nombre}</span>
+              `
+              listaCampeones.appendChild(li)
+          });
+      }
+
+      renderizarCampeon(campeones)
+
+      listaCampeones.addEventListener("click", (e) => {
+          // console.log("target:", e.target) -> devuelve si es li, span.nombre o span.emoji
+          // console.log("currentTarget:", e.currentTarget) -> siempre devuelve la ul porque es la que lleva el control del evento
+          const li = e.target.closest("li")
+
+          const seleccionado = listaCampeones.querySelector(".seleccionado")
+
+          if (seleccionado) {
+              seleccionado.classList.remove("seleccionado")
+          }
+
+          li.classList.add("seleccionado")
+          const liSpanNombre = li.querySelector(".nombre")
+          const textoSpanNombre = liSpanNombre.textContent
+
+          const aBuscar = campeones.find(campeon => campeon.nombre === textoSpanNombre)
+
+          infoCampeon.innerHTML = `
+              Rol: ${aBuscar.rol}, Dificultad: ${aBuscar.dificultad}, Precio: ${aBuscar.precio}
+          `
+      })
+
+      //------------------------2.6-----------------------------
+      //change se lee cuando se da a enter
+      //keydown lee un caracter por detrás
+      //Decisión: uso de input porque lee lo que hay dentro del input tal como está, y luego un filter para filtrar la lista según lo que tiene input escrito junto con includes que va a mostrar todo lo que contenga por ejemplo "l" sin importar la posición, y vuelto a renderizar
+      const filtroLista = document.querySelector(".filtro-lista")
+
+      filtroLista.addEventListener("input", (e) => {
+          const escrito = filtroLista.value
+
+          const filtrado = campeones.filter(campeon =>
+              campeon.nombre.toLowerCase().includes(escrito.toLowerCase())
+          )
+          renderizarCampeon(filtrado)
+
+      })
+
+      //------------------------2.7-----------------------------
+      //Decisión: uso de mouseenter y mouseleave porque solo se funcionan como si fuese un hover de la tarjeta, y forEach con index porque las tarjetas están en el mismo orden que modos, así con modos[index] saco la descripción de cada una
+      //modos->nombre, descripcion
+      const articles = document.querySelectorAll(".modo")
+      const descripcionModo = document.querySelector(".descripcion-modo")
+
+      const textoOriginal = descripcionModo.textContent
+
+      articles.forEach((article, index) => {
+
+        article.addEventListener("mouseenter", () => {
+          descripcionModo.textContent = modos[index].descripcion
+          article.classList.add("activo")
         })
 
-        menu.addEventListener("mouseleave", () => {
-            menuJuego.classList.remove("abierto")
+        article.addEventListener("mouseleave", () => {
+          descripcionModo.textContent = textoOriginal
+          article.classList.remove("activo")
         })
-
-        //------------------------2.2-----------------------------
-        //Decisión: uso de click porque pide que funcione con click, además toggle para que sirva clicar y desclicar sobre "Más", y uso de stopPropagation para evitar el burbujeo del hijo al padre
-        const botonMas = document.querySelector(".btn-mas")
-        const submenuMas = document.querySelector(".submenu-mas")
-        const body = document.querySelector("body")
-
-        botonMas.addEventListener("click", (e) => {
-            submenuMas.classList.toggle("abierto")
-            e.stopPropagation()
-        })
-
-        body.addEventListener("click", () => {
-            submenuMas.classList.remove("abierto")
-        })
-       
-
-        //------------------------2.3-----------------------------
-        const lupa = document.querySelector(".btn-lupa")
-        const entrada = document.querySelector(".entrada-busqueda")
-        const buscador = document.querySelector(".buscador")
-
-
-        lupa.addEventListener("click", (e) => {
-            entrada.classList.add("abierto")
-            buscador.focus() 
-        })
-
-        entrada.addEventListener("blur", () => {
-            if (entrada.value.trim() === "") {
-                buscador.classList.remove("abierto")
-            }
-        })
-        
-       
-
+      })
     </script>
-</body>
+  </body>
 </html>
