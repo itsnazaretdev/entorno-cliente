@@ -64,9 +64,7 @@
 
     <main class="container py-4" style="max-width: 960px">
       <section class="card shadow-sm">
-        <div
-          class="card-header d-flex justify-content-between align-items-center"
-        >
+        <div class="card-header d-flex justify-content-between align-items-center">
           <h1 class="h5 mb-0">Cartelera</h1>
           <span class="badge bg-warning text-dark">Bloque A</span>
         </div>
@@ -82,8 +80,7 @@
           <ul class="cartelera"></ul>
 
           <p class="mb-0 mt-3">
-            Películas: <strong class="cantidad badge text-bg-dark">0</strong> ·
-            Maratón:
+            Películas: <strong class="cantidad badge text-bg-dark">0</strong> · Maratón:
             <strong class="total badge bg-warning text-dark">0 min</strong>
           </p>
         </div>
@@ -156,20 +153,18 @@
       // Decisión: <método o evento>, porque <una línea con el porqué>.
       const ulCartelera = document.querySelector(".cartelera");
       let generoActivo = "Todos";
-      const botones = document.querySelectorAll(".generos button")
-
+      const botones = document.querySelectorAll(".generos button");
 
       let visibles = peliculas;
+
+      const total = document.querySelector(".total");
+      const cantidad = document.querySelector(".cantidad");
       //------------------------------A.2-------------------------------
       function obtenerVisibles() {
         if (generoActivo !== "Todos") {
-          visibles = peliculas.filter(
-            (pelicula) => pelicula.genero === generoActivo,
-          );
-          
+          visibles = peliculas.filter((pelicula) => pelicula.genero === generoActivo);
         } else {
           visibles = peliculas;
-          
         }
       }
 
@@ -191,14 +186,19 @@
           ulCartelera.appendChild(li);
         });
 
-        botones.forEach(boton => {
-            if (generoActivo === boton.textContent) {
-                boton.classList.add("activo")
-            } else {
-                boton.classList.remove("activo")
-            }
-        })
+        botones.forEach((boton) => {
+          if (generoActivo === boton.textContent) {
+            boton.classList.add("activo");
+          } else {
+            boton.classList.remove("activo");
+          }
+        });
 
+        let maraton = peliculas.reduce((acc, pelicula) => acc + pelicula.duracion, 0);
+        total.textContent = `${maraton} min`;
+
+        let peliculasCount = visibles.length;
+        cantidad.textContent = peliculasCount;
       }
 
       //------------------------------A.3-------------------------------
