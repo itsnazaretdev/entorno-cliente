@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<!--
+    Práctica integrador - Bloque A, paso roto: Cine Barrio
+    Este archivo YA tiene el código, pero tiene 3 errores clásicos.
+    No lo reescribas desde cero: encontrá cada error, corregilo y explicá en un comentario por qué fallaba.
+-->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cine Barrio - Paso roto</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .generos button.activo { background-color: var(--bs-warning); border-color: var(--bs-warning); color: #000; }
+        .cartelera { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; list-style: none; padding: 0; margin: 0; }
+        .cartelera li { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px; text-align: center; border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius-lg); background-color: var(--bs-body-bg); box-shadow: var(--bs-box-shadow-sm); }
+        .cartelera .emoji { font-size: 40px; line-height: 1; }
+        .cartelera .titulo { font-weight: bold; }
+        .cartelera .genero { font-size: 12px; color: var(--bs-secondary-color); }
+        .cartelera .duracion { font-weight: bold; color: var(--bs-primary); }
+    </style>
+</head>
+<body class="bg-light">
+
+    <header class="d-flex align-items-center gap-4 px-4 py-2 bg-dark shadow-sm">
+        <span class="fw-bold text-warning fs-5">🎬 Cine Barrio</span>
+        <span class="badge bg-danger">Paso roto: 3 errores</span>
+    </header>
+
+    <main class="container py-4" style="max-width: 960px;">
+        <section class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h1 class="h5 mb-0">Cartelera</h1>
+                <span class="badge bg-warning text-dark">Bloque A</span>
+            </div>
+            <div class="card-body">
+                <div class="generos d-flex flex-wrap gap-2 mb-3">
+                    <button class="btn btn-sm btn-outline-warning text-dark activo">Todos</button>
+                    <button class="btn btn-sm btn-outline-warning text-dark">Comedia</button>
+                    <button class="btn btn-sm btn-outline-warning text-dark">Drama</button>
+                    <button class="btn btn-sm btn-outline-warning text-dark">Terror</button>
+                    <button class="btn btn-sm btn-outline-warning text-dark">Animación</button>
+                </div>
+
+                <ul class="cartelera"></ul>
+
+                <p class="mb-0 mt-3">Películas: <strong class="cantidad badge text-bg-dark">0</strong> · Maratón: <strong class="total badge bg-warning text-dark">0 min</strong></p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // ===== DATOS =====
+        let peliculas = [
+            { id: 1, titulo: "La Abuela Ninja", genero: "Comedia", duracion: 95, emoji: "🥋" },
+            { id: 2, titulo: "Noche sin Luna", genero: "Terror", duracion: 110, emoji: "🌑" },
+            { id: 3, titulo: "El Último Tren", genero: "Drama", duracion: 125, emoji: "🚂" },
+            { id: 4, titulo: "Robots de Cartón", genero: "Animación", duracion: 88, emoji: "🤖" },
+            { id: 5, titulo: "Vacaciones Desastre", genero: "Comedia", duracion: 102, emoji: "🏖️" },
+            { id: 6, titulo: "La Casa del Eco", genero: "Terror", duracion: 98, emoji: "🏚️" },
+            { id: 7, titulo: "Cartas a Marta", genero: "Drama", duracion: 117, emoji: "✉️" },
+            { id: 8, titulo: "El Gato Astronauta", genero: "Animación", duracion: 84, emoji: "🐱" }
+        ];
+
+        // ===== CÓDIGO CON 3 ERRORES =====
+        let generoActivo = "Todos";
+
+        const contGeneros = document.querySelector(".generos");
+        const botonesGenero = contGeneros.querySelectorAll("button");
+        const cartelera = document.querySelector(".cartelera");
+        const cantidad = document.querySelector(".cantidad");
+        const total = document.querySelector(".total");
+
+        function obtenerVisibles() {
+            if (generoActivo !== "Todos") {
+                peliculas = peliculas.filter(pelicula => pelicula.genero === generoActivo);
+            }
+            return peliculas;
+        }
+
+        function renderizar() {
+            const visibles = obtenerVisibles();
+
+            botonesGenero.forEach(boton => {
+                if (boton.textContent === generoActivo) {
+                    boton.classList.add("activo");
+                } else {
+                    boton.classList.remove("activo");
+                }
+            });
+
+            cartelera.innerHTML = "";
+
+            visibles.forEach(({ titulo, genero, duracion, emoji }) => {
+                const item = document.createElement("li");
+                item.innerHTML = `
+                    <span class="emoji">${emoji}</span>
+                    <span class="titulo">${titulo}</span>
+                    <span class="genero">${genero}</span>
+                    <span class="duracion">${duracion} min</span>
+                `;
+                cartelera.appendChild(item);
+            });
+
+            const minutos = visibles.reduce((acumulador, pelicula) => acumulador + pelicula.duracion, 0);
+            cantidad.textContent = visibles.length;
+            total.textContent = `${minutos} min`;
+
+            contGeneros.addEventListener("click", (event) => {
+                const boton = event.target.closest("button");
+
+                if (boton === null) return;
+
+                console.log("Filtrando por", boton.textContent);
+                generoActivo = boton.textContent;
+                renderizar();
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!doctype html>
+<!--
+    Práctica integrador - Bloque A (guiado): Cine Barrio
+    Bootstrap 5.3.3 (local, sin internet) se usa SOLO para el aspecto.
+    Todo el comportamiento lo escribís vos en JS, agregando y sacando la clase activo.
+-->
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cine Barrio - Bloque A</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+      /* Este CSS va DESPUÉS de Bootstrap: la clase de estado (activo) manda. */
+      .generos button.activo {
+        background-color: var(--bs-warning);
+        border-color: var(--bs-warning);
+        color: #000;
+      }
+
+      /* Cartelera: los li los crea el JS, por eso se estilan desde acá */
+      .cartelera {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+        gap: 12px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .cartelera li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 12px;
+        text-align: center;
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius-lg);
+        background-color: var(--bs-body-bg);
+        box-shadow: var(--bs-box-shadow-sm);
+      }
+      .cartelera .emoji {
+        font-size: 40px;
+        line-height: 1;
+      }
+      .cartelera .titulo {
+        font-weight: bold;
+      }
+      .cartelera .genero {
+        font-size: 12px;
+        color: var(--bs-secondary-color);
+      }
+      .cartelera .duracion {
+        font-weight: bold;
+        color: var(--bs-primary);
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <header class="d-flex align-items-center gap-4 px-4 py-2 bg-dark shadow-sm">
+      <span class="fw-bold text-warning fs-5">🎬 Cine Barrio</span>
+      <span class="text-white-50 small">Cartelera de la semana</span>
+    </header>
+
+    <main class="container py-4" style="max-width: 960px">
+      <section class="card shadow-sm">
+        <div
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <h1 class="h5 mb-0">Cartelera</h1>
+          <span class="badge bg-warning text-dark">Bloque A</span>
+        </div>
+        <div class="card-body">
+          <div class="generos d-flex flex-wrap gap-2 mb-3">
+            <button class="btn btn-sm btn-outline-warning text-dark activo">Todos</button>
+            <button class="btn btn-sm btn-outline-warning text-dark">Comedia</button>
+            <button class="btn btn-sm btn-outline-warning text-dark">Drama</button>
+            <button class="btn btn-sm btn-outline-warning text-dark">Terror</button>
+            <button class="btn btn-sm btn-outline-warning text-dark">Animación</button>
+          </div>
+
+          <ul class="cartelera"></ul>
+
+          <p class="mb-0 mt-3">
+            Películas: <strong class="cantidad badge text-bg-dark">0</strong> ·
+            Maratón:
+            <strong class="total badge bg-warning text-dark">0 min</strong>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      // ===== DATOS (no modificar) =====
+      const peliculas = [
+        {
+          id: 1,
+          titulo: "La Abuela Ninja",
+          genero: "Comedia",
+          duracion: 95,
+          emoji: "🥋",
+        },
+        {
+          id: 2,
+          titulo: "Noche sin Luna",
+          genero: "Terror",
+          duracion: 110,
+          emoji: "🌑",
+        },
+        {
+          id: 3,
+          titulo: "El Último Tren",
+          genero: "Drama",
+          duracion: 125,
+          emoji: "🚂",
+        },
+        {
+          id: 4,
+          titulo: "Robots de Cartón",
+          genero: "Animación",
+          duracion: 88,
+          emoji: "🤖",
+        },
+        {
+          id: 5,
+          titulo: "Vacaciones Desastre",
+          genero: "Comedia",
+          duracion: 102,
+          emoji: "🏖️",
+        },
+        {
+          id: 6,
+          titulo: "La Casa del Eco",
+          genero: "Terror",
+          duracion: 98,
+          emoji: "🏚️",
+        },
+        {
+          id: 7,
+          titulo: "Cartas a Marta",
+          genero: "Drama",
+          duracion: 117,
+          emoji: "✉️",
+        },
+        {
+          id: 8,
+          titulo: "El Gato Astronauta",
+          genero: "Animación",
+          duracion: 84,
+          emoji: "🐱",
+        },
+      ];
+
+      // ===== TU CÓDIGO ACÁ =====
+      // Antes de cada paso, escribí:
+      // Decisión: <método o evento>, porque <una línea con el porqué>.
+      const ulCartelera = document.querySelector(".cartelera");
+      let generoActivo = "Todos";
+      const botones = document.querySelectorAll(".generos button")
+
+
+      let visibles = peliculas;
+      //------------------------------A.2-------------------------------
+      function obtenerVisibles() {
+        if (generoActivo !== "Todos") {
+          visibles = peliculas.filter(
+            (pelicula) => pelicula.genero === generoActivo,
+          );
+          
+        } else {
+          visibles = peliculas;
+          
+        }
+      }
+
+      //------------------------------A.1--------------------------------
+      function renderizar() {
+        obtenerVisibles();
+
+        ulCartelera.innerHTML = "";
+
+        visibles.forEach(({ titulo, genero, duracion, emoji }) => {
+          const li = document.createElement("li");
+
+          li.innerHTML = `
+                        <span class="emoji">${emoji}</span>
+                        <span class="titulo">${titulo}</span>
+                        <span class="genero">${genero}</span>
+                        <span class="duracion">${duracion}</span>
+                    `;
+          ulCartelera.appendChild(li);
+        });
+
+        botones.forEach(boton => {
+            if (generoActivo === boton.textContent) {
+                boton.classList.add("activo")
+            } else {
+                boton.classList.remove("activo")
+            }
+        })
+
+      }
+
+      //------------------------------A.3-------------------------------
+      const generos = document.querySelector(".generos");
+
+      generos.addEventListener("click", (e) => {
+        const boton = e.target.closest("button");
+        if (boton === null) return;
+
+        generoActivo = boton.textContent;
+
+        renderizar();
+      });
+
+      renderizar();
+    </script>
+  </body>
+</html>

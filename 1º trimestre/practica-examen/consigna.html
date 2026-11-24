@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Práctica: el integrador paso a paso</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* La flecha gira cuando el bloque está abierto (Bootstrap cambia aria-expanded) */
+        .btn-desplegar .flecha { display: inline-block; transition: transform .35s ease; }
+        .btn-desplegar[aria-expanded="true"] .flecha { transform: rotate(180deg); }
+        /* Transición de altura un poco más suave que la de Bootstrap (.35s) */
+        .collapsing { transition: height .45s ease; }
+    </style>
+</head>
+<body class="bg-light">
+<!-- CONTENIDO PARA MOODLE: copiar desde aquí -->
+<div class="container py-4" style="max-width: 920px;">
+
+    <!-- Encabezado -->
+    <header class="p-4 mb-4 bg-dark text-white rounded-3 shadow-sm">
+        <span class="badge bg-warning text-dark mb-2">Desarrollo Web en Entorno Cliente</span>
+        <h1 class="display-6 fw-bold mb-2">Práctica: el integrador paso a paso</h1>
+        <p class="lead mb-3">Estado → <code class="text-warning">renderizar()</code> → eventos. Lo practicamos de a poco, en tres interfaces distintas, hasta llegar al nivel del examen.</p>
+        <div class="d-flex flex-wrap gap-2">
+            <span class="badge rounded-pill text-bg-light">⏱ 4 horas</span>
+            <span class="badge rounded-pill text-bg-light">🎬 Cine · 🔥 Restaurante · 🎧 Música</span>
+            <span class="badge rounded-pill text-bg-light">🛠 Consola (F12) siempre abierta</span>
+        </div>
+    </header>
+
+    <!-- Ficha -->
+    <section id="ficha" class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h2 class="h5 mb-0">📋 Ficha de la práctica</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive mb-3">
+                <table class="table table-sm table-bordered align-middle mb-0">
+                    <tbody>
+                        <tr><th class="table-light" style="width: 30%;">Ciclo / Curso</th><td>CFGS Desarrollo de Aplicaciones Web, 2.º curso</td></tr>
+                        <tr><th class="table-light">Módulo</th><td>Desarrollo Web en Entorno Cliente</td></tr>
+                        <tr><th class="table-light">Unidad</th><td>Métodos de array y gestión de eventos en el DOM</td></tr>
+                        <tr><th class="table-light">Modalidad</th><td>Individual, en el aula, sin conexión a internet</td></tr>
+                        <tr><th class="table-light">Material</th><td><code>plantilla-a.html</code>, <code>roto-a.html</code>, <code>plantilla-b.html</code>, <code>plantilla-c.html</code> y la carpeta <code>bootstrap/</code></td></tr>
+                        <tr><th class="table-light">Entrega</th><td>Tarea de Moodle, al final de la clase</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="h6 fw-bold">Objetivo general</h3>
+            <p>Que el alumnado sea capaz de construir una interfaz interactiva siguiendo el patrón <strong>estado → <code>renderizar()</code> → eventos</strong>: pintar una lista a partir de un estado, filtrarla con un único listener delegado y mostrar totales calculados.</p>
+
+            <h3 class="h6 fw-bold">Objetivos específicos</h3>
+            <ul class="mb-0">
+                <li>Guardar en una variable de estado lo que el usuario elige (categoría, elemento seleccionado).</li>
+                <li>Escribir una función <code>renderizar()</code> que vacía y vuelve a pintar la lista a partir del estado.</li>
+                <li>Obtener los elementos visibles con <code>filter</code> sin modificar el array original.</li>
+                <li>Usar un solo listener delegado en el contenedor, con <code>closest</code> y <code>textContent</code>, que solo cambia el estado y llama a <code>renderizar()</code>.</li>
+                <li>Calcular cantidades y totales de los elementos visibles con <code>length</code> y <code>reduce</code>.</li>
+                <li>Programar componentes de cabecera: un menú que se cierra con un clic afuera y un panel que se cierra con Escape.</li>
+                <li>Encontrar y corregir los errores clásicos del patrón.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Ayuda rápida -->
+    <section id="ayuda" class="card border-primary shadow-sm mb-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="h5 mb-0">💡 Ayuda rápida: tenela a mano mientras trabajás</h2>
+            <button class="btn btn-sm btn-light btn-desplegar" type="button" data-bs-toggle="collapse" data-bs-target="#ayuda-contenido" aria-expanded="false" aria-controls="ayuda-contenido">Ver ayuda <span class="flecha">▾</span></button>
+        </div>
+        <div id="ayuda-contenido" class="collapse">
+            <div class="card-body">
+
+                <h3 class="h6 fw-bold text-primary">El patrón, en tres piezas</h3>
+                <div class="table-responsive mb-4">
+                    <table class="table table-sm table-striped table-bordered align-middle mb-0">
+                        <thead class="table-primary">
+                            <tr><th>Pieza</th><th>Qué hace</th><th>Qué NO hace</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Estado</strong><br><code>let generoActivo = "Todos";</code></td><td>Guarda lo que eligió el usuario.</td><td>No guarda HTML ni la lista filtrada.</td></tr>
+                            <tr><td><strong><code>renderizar()</code></strong></td><td>Calcula los visibles, vacía la lista (<code>innerHTML = ""</code>), la vuelve a pintar, marca el botón activo y escribe los totales.</td><td>No pone listeners. No modifica el array original.</td></tr>
+                            <tr><td><strong>Evento</strong></td><td>Un solo listener en el contenedor: averigua qué se tocó, cambia el estado y llama a <code>renderizar()</code>.</td><td>No pinta nada por su cuenta.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="h6 fw-bold text-primary">Métodos que vas a usar</h3>
+                <div class="table-responsive mb-4">
+                    <table class="table table-sm table-striped table-bordered align-middle mb-0">
+                        <thead class="table-primary">
+                            <tr><th>Quiero…</th><th>Método</th><th>Cómo se escribe</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Pintar cada elemento</td><td><code>forEach</code></td><td><code>visibles.forEach(x =&gt; { ... })</code></td></tr>
+                            <tr><td>Quedarme con varios que cumplen</td><td><code>filter</code></td><td><code>const visibles = lista.filter(x =&gt; x.tipo === tipoActivo)</code></td></tr>
+                            <tr><td>Encontrar uno solo</td><td><code>find</code></td><td><code>lista.find(x =&gt; x.nombre === nombre)</code> (o <code>undefined</code>)</td></tr>
+                            <tr><td>Sumar todos en un número</td><td><code>reduce</code></td><td><code>visibles.reduce((acc, x) =&gt; acc + x.precio, 0)</code></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="h6 fw-bold text-primary">Eventos que vas a usar</h3>
+                <div class="table-responsive mb-4">
+                    <table class="table table-sm table-striped table-bordered align-middle mb-0">
+                        <thead class="table-primary">
+                            <tr><th>Quiero…</th><th>Cómo</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Un listener para muchos botones</td><td><code>contenedor.addEventListener("click", ...)</code> + <code>event.target.closest("button")</code></td></tr>
+                            <tr><td>Saber qué botón se tocó</td><td><code>boton.textContent</code> (el texto del botón es la categoría)</td></tr>
+                            <tr><td>Abrir y cerrar con el mismo botón</td><td><code>elemento.classList.toggle("abierto")</code></td></tr>
+                            <tr><td>Cerrar con un clic afuera</td><td><code>document.addEventListener("click", ...)</code> + <code>event.stopPropagation()</code> en el botón</td></tr>
+                            <tr><td>Cerrar con Escape</td><td><code>keydown</code> + <code>if (event.key === "Escape")</code></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="h6 fw-bold text-primary">Los tres errores clásicos</h3>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="alert alert-danger h-100 mb-0">
+                            <p class="fw-bold mb-1">Filtrar el original</p>
+                            <p class="small mb-0"><code>lista = lista.filter(...)</code> pierde elementos para siempre. Guardá el resultado en <strong>otra</strong> variable.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="alert alert-danger h-100 mb-0">
+                            <p class="fw-bold mb-1">Listener dentro de <code>renderizar()</code></p>
+                            <p class="small mb-0">Cada pintada suma otro listener y los clics se multiplican. El listener va <strong>afuera</strong>, una sola vez.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="alert alert-danger h-100 mb-0">
+                            <p class="fw-bold mb-1">Olvidar <code>renderizar()</code></p>
+                            <p class="small mb-0">Al cargar la página y al final de cada evento. Si no, el estado cambia pero la pantalla no.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cómo se trabaja -->
+    <section id="como" class="mb-4">
+        <h2 class="h3 border-bottom border-warning border-3 pb-2 mb-3">Cómo se trabaja</h2>
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <span class="badge rounded-pill bg-dark fs-6 mb-2">1</span>
+                        <p class="card-text mb-0"><strong>Leé el ejercicio</strong> y mirá la plantilla en el navegador.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <span class="badge rounded-pill bg-dark fs-6 mb-2">2</span>
+                        <p class="card-text mb-0"><strong>Escribí tu decisión</strong> en un comentario, en una sola línea, con el porqué.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <span class="badge rounded-pill bg-dark fs-6 mb-2">3</span>
+                        <p class="card-text mb-0"><strong>Programalo</strong> y probalo con los totales de la autoevaluación.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-warning font-monospace py-2">// Decisión: filter, porque quiero VARIOS (los de la categoría) en un array nuevo, sin tocar el original.</div>
+        <ul class="list-group">
+            <li class="list-group-item">Cada plantilla ya tiene los datos, el HTML y el CSS. <strong>Solo escribís JS</strong>, al final, donde dice <code>TU CÓDIGO ACÁ</code>.</li>
+            <li class="list-group-item">Las clases de estado (<code>activo</code>, <code>seleccionado</code>, <code>abierto</code>) ya tienen su CSS: vos solo las agregás y las sacás.</li>
+            <li class="list-group-item">Los tres bloques van de más guiado a más autónomo. El <strong>Bloque C</strong> tiene el nivel del examen.</li>
+        </ul>
+    </section>
+
+    <!-- Ejemplo resuelto -->
+    <div class="card border-success shadow-sm mb-4">
+        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <span><strong>🧩 Ejemplo resuelto</strong> <small>(con datos que no están en la práctica)</small></span>
+            <button class="btn btn-sm btn-light btn-desplegar" type="button" data-bs-toggle="collapse" data-bs-target="#ejemplo-contenido" aria-expanded="false" aria-controls="ejemplo-contenido">Ver ejemplo <span class="flecha">▾</span></button>
+        </div>
+        <div id="ejemplo-contenido" class="collapse">
+            <div class="card-body">
+                <p class="mb-2"><strong>Escenario:</strong> una biblioteca muestra sus libros. Hay botones "Todos", "Novela" y "Ciencia" en <code>.temas</code>; la lista se pinta en <code>.libros</code> y debajo se muestra el total de páginas de los libros que se ven.</p>
+                <pre class="bg-dark text-light p-3 rounded small"><code>const libros = [
+    { titulo: "El faro", tema: "Novela", paginas: 320 },
+    { titulo: "Átomos para todos", tema: "Ciencia", paginas: 180 },
+    { titulo: "La última carta", tema: "Novela", paginas: 250 }
+];
+
+// 1) ESTADO: lo que eligió el usuario
+let temaActivo = "Todos";
+
+const contTemas = document.querySelector(".temas");
+const listaLibros = document.querySelector(".libros");
+const totalPaginas = document.querySelector(".total-paginas");
+
+// 2) RENDERIZAR: pinta todo a partir del estado
+function renderizar() {
+    // Decisión: filter, porque quiero VARIOS libros (los del tema) sin modificar libros.
+    let visibles = libros;
+    if (temaActivo !== "Todos") {
+        visibles = libros.filter(libro =&gt; libro.tema === temaActivo);
+    }
+
+    // Decisión: forEach, porque por cada libro creo y agrego un li.
+    listaLibros.innerHTML = "";
+    visibles.forEach(libro =&gt; {
+        const item = document.createElement("li");
+        item.textContent = `${libro.titulo} (${libro.paginas} páginas)`;
+        listaLibros.appendChild(item);
+    });
+
+    // Decisión: reduce sobre los visibles, porque junto sus páginas en UN número.
+    const suma = visibles.reduce((acumulador, libro) =&gt; acumulador + libro.paginas, 0);
+    totalPaginas.textContent = suma;
+}
+
+// 3) EVENTO: un solo listener, afuera de renderizar()
+// Decisión: click en .temas (delegación) + closest("button"), porque todos los botones hacen lo mismo.
+contTemas.addEventListener("click", (event) =&gt; {
+    const boton = event.target.closest("button");
+    if (boton === null) return;   // clic en el hueco entre botones
+
+    temaActivo = boton.textContent;  // solo cambia el estado...
+    renderizar();                    // ...y vuelve a pintar
+});
+
+renderizar();  // pintar la primera vez, al cargar</code></pre>
+                <div class="alert alert-success mb-0">
+                    <p class="fw-bold mb-1">Fijate en el orden</p>
+                    <p class="mb-0">El evento <strong>no pinta</strong>: cambia <code>temaActivo</code> y llama a <code>renderizar()</code>. Y <code>renderizar()</code> <strong>no pone listeners</strong>. Si mantenés esa separación, el integrador sale solo.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bloque A -->
+    <section id="bloque-a" class="mb-4">
+        <h2 class="h3 border-bottom border-warning border-3 pb-2 mb-3">Bloque A: Cine Barrio <small class="text-body-secondary fs-6">(guiado, <code>plantilla-a.html</code>)</small></h2>
+        <p>Una cartelera de cine con botones por género. Vas a armar el integrador en cuatro pasos chicos. Probá cada paso antes de pasar al siguiente.</p>
+
+        <div class="table-responsive mb-3">
+            <table class="table table-sm table-bordered table-hover align-middle mb-0">
+                <thead class="table-dark"><tr><th>Selector</th><th>Qué es</th><th>Clase de estado</th></tr></thead>
+                <tbody>
+                    <tr><td><code>.generos</code></td><td>Contenedor de los botones de género</td><td>—</td></tr>
+                    <tr><td><code>.generos button</code></td><td>Cada botón (su texto es el género)</td><td><code>activo</code></td></tr>
+                    <tr><td><code>.cartelera</code></td><td>Lista (<code>ul</code>) donde se pintan las películas</td><td>—</td></tr>
+                    <tr><td><code>.cantidad</code>, <code>.total</code></td><td>Cantidad de películas visibles y suma de sus minutos</td><td>—</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>A1 Pintar el estado</strong><span class="badge bg-success">★ paso 1</span></div>
+            <div class="card-body">
+                <p>Creá el estado <code>let generoActivo = "Todos";</code> y una función <code>renderizar()</code> que vacíe <code>.cartelera</code> y pinte un <code>li</code> por película con este HTML adentro:</p>
+                <pre class="bg-white border rounded p-2"><code>&lt;span class="emoji"&gt;🥋&lt;/span&gt;
+&lt;span class="titulo"&gt;La Abuela Ninja&lt;/span&gt;
+&lt;span class="genero"&gt;Comedia&lt;/span&gt;
+&lt;span class="duracion"&gt;95 min&lt;/span&gt;</code></pre>
+                <p>Llamá a <code>renderizar()</code> al final del script. <strong>Comprobación:</strong> se ven las 8 películas.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>A2 Una función que devuelve las visibles</strong><span class="badge bg-success">★ paso 2</span></div>
+            <div class="card-body">
+                <p>Escribí <code>obtenerVisibles()</code>: si <code>generoActivo</code> es "Todos", devuelve todas; si no, solo las de ese género. <strong>No modifiques <code>peliculas</code>.</strong> Usala en <code>renderizar()</code> para pintar solo las visibles.</p>
+                <p><strong>Comprobación sin botones:</strong> escribí en la consola <code>generoActivo = "Terror"; renderizar();</code> → se ven 2. Después <code>generoActivo = "Todos"; renderizar();</code> → vuelven las 8.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>A3 Un solo listener que cambia el estado</strong><span class="badge bg-warning text-dark">★★ paso 3</span></div>
+            <div class="card-body">
+                <p>Poné <strong>un</strong> <code>addEventListener</code> en <code>.generos</code>, <strong>afuera</strong> de <code>renderizar()</code>. Adentro: buscá el botón con <code>closest("button")</code>, si es <code>null</code> cortá, guardá su <code>textContent</code> en <code>generoActivo</code> y llamá a <code>renderizar()</code>.</p>
+                <p>Además, dentro de <code>renderizar()</code>, poné la clase <code>activo</code> en el botón cuyo texto coincide con <code>generoActivo</code>, y sacásela a los demás.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>A4 Cantidad y total</strong><span class="badge bg-success">★ paso 4</span></div>
+            <div class="card-body">
+                <p>Al final de <code>renderizar()</code>, mostrá en <code>.cantidad</code> cuántas películas se ven y en <code>.total</code> la suma de sus minutos (<code>"819 min"</code>). Solo las visibles.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+
+        <div class="card border-danger shadow-sm mb-3">
+            <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center"><strong>A5 Paso roto: encontrá los 3 errores</strong><span class="badge bg-light text-danger">roto-a.html</span></div>
+            <div class="card-body">
+                <p><code>roto-a.html</code> es la misma cartelera, con el código ya escrito y <strong>tres errores clásicos</strong>. No lo reescribas: encontrá cada error, corregilo y dejá un comentario <code>// ERROR 1: ...</code> explicando <strong>por qué</strong> fallaba.</p>
+                <ol class="mb-0">
+                    <li><strong>Síntoma 1:</strong> la página arranca vacía y los botones no hacen nada.</li>
+                    <li><strong>Síntoma 2:</strong> (cuando arregles el 1) en la consola, "Filtrando por" aparece 1 vez, después 2, después 4, después 8...</li>
+                    <li><strong>Síntoma 3:</strong> después de elegir "Comedia", "Drama" muestra 0 películas y "Todos" muestra solo 2.</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bloque B -->
+    <section id="bloque-b" class="mb-4">
+        <h2 class="h3 border-bottom border-warning border-3 pb-2 mb-3">Bloque B: El Fogón de la Esquina <small class="text-body-secondary fs-6">(semiguiado, <code>plantilla-b.html</code>)</small></h2>
+        <p>La carta de un restaurante. Además de filtrar, ahora el usuario <strong>elige un plato</strong>: se resalta y su detalle aparece a la derecha. El estado tiene <strong>dos</strong> variables:</p>
+        <pre class="bg-white border rounded p-2"><code>let tipoActivo = "Todos";
+let seleccionado = null;   // el plato elegido (objeto), o null si todavía no hay</code></pre>
+
+        <div class="table-responsive mb-3">
+            <table class="table table-sm table-bordered table-hover align-middle mb-0">
+                <thead class="table-dark"><tr><th>Selector</th><th>Qué es</th><th>Clase de estado</th></tr></thead>
+                <tbody>
+                    <tr><td><code>.tipos</code>, <code>.tipos button</code></td><td>Botones de tipo (su texto es el tipo)</td><td><code>activo</code></td></tr>
+                    <tr><td><code>.menu</code></td><td>Lista (<code>ul</code>) de platos</td><td><code>seleccionado</code> en el <code>li</code> elegido</td></tr>
+                    <tr><td><code>.detalle-emoji</code>, <code>.detalle-nombre</code>, <code>.detalle-descripcion</code>, <code>.detalle-precio</code></td><td>Panel de detalle</td><td>—</td></tr>
+                    <tr><td><code>.cantidad</code>, <code>.total</code></td><td>Platos visibles y precio de "uno de cada"</td><td>—</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>B1 Pintar la carta</strong><span class="badge bg-success">★</span></div>
+            <div class="card-body">
+                <p>Un <code>li</code> por plato visible con <code>span.emoji</code>, <code>span.nombre</code>, <code>span.tipo</code> y <code>span.precio</code> (<code>"6 €"</code>). Si es el plato seleccionado, el <code>li</code> lleva la clase <code>seleccionado</code>.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>B2 Filtrar por tipo</strong><span class="badge bg-warning text-dark">★★</span></div>
+            <div class="card-body">
+                <p>Igual que en el Bloque A: un solo listener en <code>.tipos</code>, el botón elegido con <code>activo</code>, y <code>platos</code> sin modificar.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>B3 Elegir un plato</strong><span class="badge bg-warning text-dark">★★</span></div>
+            <div class="card-body">
+                <p>Un solo listener en <code>.menu</code>. Al hacer clic en cualquier parte de un plato: buscá el <code>li</code> con <code>closest("li")</code>, leé el texto de su <code>.nombre</code>, buscá el plato completo en <code>platos</code> y guardalo en <code>seleccionado</code>. Después, <code>renderizar()</code> pinta el detalle y el resaltado.</p>
+                <p class="small text-body-secondary mb-2">Pista: <code>item.querySelector(".nombre").textContent</code> te da el nombre de esa fila.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>B4 Cantidad y total</strong><span class="badge bg-success">★</span></div>
+            <div class="card-body">
+                <p>Cuántos platos se ven y cuánto cuesta pedir <strong>uno de cada uno de los visibles</strong>.</p>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión:</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bloque C -->
+    <section id="bloque-c" class="mb-4">
+        <h2 class="h3 border-bottom border-warning border-3 pb-2 mb-3">Bloque C: SonidoLibre <small class="text-body-secondary fs-6">(autónomo, nivel examen, <code>plantilla-c.html</code>)</small></h2>
+        <div class="alert alert-info">Hacelo como en el examen: <strong>70 minutos</strong>, sin mirar la ayuda ni tus soluciones de A y B. Después comparalo con la autoevaluación.</div>
+
+        <div class="table-responsive mb-3">
+            <table class="table table-sm table-bordered table-hover align-middle mb-0">
+                <thead class="table-dark"><tr><th>Selector</th><th>Qué es</th><th>Clase de estado</th></tr></thead>
+                <tbody>
+                    <tr><td><code>.btn-perfil</code>, <code>.menu-perfil</code></td><td>Botón y menú "Perfil"</td><td><code>abierto</code> en el menú</td></tr>
+                    <tr><td><code>.btn-cola</code>, <code>.panel-cola</code></td><td>Botón y panel lateral "Cola"</td><td><code>abierto</code> en el panel</td></tr>
+                    <tr><td><code>.generos</code>, <code>.generos button</code></td><td>Botones de género (su texto es el género)</td><td><code>activo</code></td></tr>
+                    <tr><td><code>.lista-canciones</code></td><td>Lista (<code>ul</code>) de canciones</td><td>—</td></tr>
+                    <tr><td><code>.cantidad</code>, <code>.total</code></td><td>Canciones visibles y suma de sus minutos</td><td>—</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>C1 Menú "Perfil"</strong><span class="badge bg-warning text-dark">★★</span></div>
+            <div class="card-body">
+                <p>Cada clic en <code>.btn-perfil</code> abre o cierra <code>.menu-perfil</code>. Un clic en cualquier otro lugar lo cierra. No puede abrirse y cerrarse en el mismo clic.</p>
+                <div class="alert alert-warning font-monospace py-2">// Decisión: (abrir y cerrar con el botón)</div>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión: (cerrar con un clic afuera)</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>C2 Panel "Cola"</strong><span class="badge bg-warning text-dark">★★</span></div>
+            <div class="card-body">
+                <p>Un clic en <code>.btn-cola</code> abre el panel <code>.panel-cola</code>. Apretar <strong>Escape</strong> en cualquier parte de la página lo cierra.</p>
+                <div class="alert alert-warning font-monospace py-2">// Decisión: (abrir)</div>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión: (cerrar con Escape: qué evento y dónde lo escuchás)</div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center"><strong>C3 a C5 La lista</strong><span class="badge bg-danger">★★★</span></div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>C3</strong> Pintá la lista desde un estado <code>generoActivo</code>: un <code>li</code> con <code>span.emoji</code>, <code>span.titulo</code>, <code>span.artista</code>, <code>span.genero</code> y <code>span.duracion</code> (<code>"4 min"</code>).</li>
+                    <li><strong>C4</strong> Filtrá por género con un solo listener delegado en <code>.generos</code>; el botón elegido lleva <code>activo</code>.</li>
+                    <li><strong>C5</strong> Mostrá la cantidad de canciones visibles y la suma de sus minutos.</li>
+                </ul>
+                <div class="alert alert-warning font-monospace py-2 mb-0">// Decisión: (una por cada uno: C3, C4 y C5)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Autoevaluación -->
+    <section id="autoevaluacion" class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h2 class="h5 mb-0">✅ Autoevaluación: ¿te dan estos números?</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive mb-3">
+                <table class="table table-sm table-striped table-bordered align-middle mb-0">
+                    <thead class="table-dark"><tr><th>Bloque</th><th>Filtro</th><th class="text-center">Cantidad</th><th class="text-center">Total</th></tr></thead>
+                    <tbody>
+                        <tr><td rowspan="5">A · Cine</td><td>Todos</td><td class="text-center">8</td><td class="text-center">819 min</td></tr>
+                        <tr><td>Comedia</td><td class="text-center">2</td><td class="text-center">197 min</td></tr>
+                        <tr><td>Drama</td><td class="text-center">2</td><td class="text-center">242 min</td></tr>
+                        <tr><td>Terror</td><td class="text-center">2</td><td class="text-center">208 min</td></tr>
+                        <tr><td>Animación</td><td class="text-center">2</td><td class="text-center">172 min</td></tr>
+                        <tr><td rowspan="5">B · Restaurante</td><td>Todos</td><td class="text-center">10</td><td class="text-center">76 €</td></tr>
+                        <tr><td>Entrante</td><td class="text-center">3</td><td class="text-center">21 €</td></tr>
+                        <tr><td>Principal</td><td class="text-center">3</td><td class="text-center">39 €</td></tr>
+                        <tr><td>Postre</td><td class="text-center">2</td><td class="text-center">11 €</td></tr>
+                        <tr><td>Bebida</td><td class="text-center">2</td><td class="text-center">5 €</td></tr>
+                        <tr><td rowspan="5">C · Música</td><td>Todos</td><td class="text-center">10</td><td class="text-center">39 min</td></tr>
+                        <tr><td>Rock</td><td class="text-center">2</td><td class="text-center">9 min</td></tr>
+                        <tr><td>Pop</td><td class="text-center">2</td><td class="text-center">6 min</td></tr>
+                        <tr><td>Electrónica</td><td class="text-center">3</td><td class="text-center">15 min</td></tr>
+                        <tr><td>Folk</td><td class="text-center">3</td><td class="text-center">9 min</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="fw-bold mb-1">Y además:</p>
+            <ul class="mb-0">
+                <li>Elegí un filtro y después "Todos": vuelven <strong>todos</strong> los elementos.</li>
+                <li>Hacé clic varias veces en los filtros con la consola abierta: no aparecen mensajes repetidos ni errores.</li>
+                <li>Solo un botón tiene el resaltado a la vez.</li>
+                <li>En el Bloque C: el menú "Perfil" se abre con un clic, se cierra con otro y con un clic afuera; el panel "Cola" se cierra con Escape.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Entrega -->
+    <section id="entrega" class="alert alert-dark shadow-sm mb-4">
+        <h2 class="h5">📤 Entrega</h2>
+        <p class="mb-0">Subí a la Tarea de Moodle tus cuatro archivos: <code>plantilla-a.html</code>, <code>roto-a.html</code>, <code>plantilla-b.html</code> y <code>plantilla-c.html</code>, con todas las líneas <code>// Decisión:</code> completas. Lo que no llegues a terminar, entregalo igual: se valora el proceso.</p>
+    </section>
+
+    <footer class="text-body-secondary small border-top pt-3">
+        <p class="mb-1"><strong>¿Te diste cuenta?</strong> Esta consigna está hecha con Bootstrap. Abrí el inspector (F12) y buscá estos componentes y clases:</p>
+        <p class="mb-0">
+            <span class="badge text-bg-secondary">card</span>
+            <span class="badge text-bg-secondary">alert</span>
+            <span class="badge text-bg-secondary">badge</span>
+            <span class="badge text-bg-secondary">collapse</span>
+            <span class="badge text-bg-secondary">table-striped</span>
+            <span class="badge text-bg-secondary">list-group</span>
+            <span class="badge text-bg-secondary">row / col-md-*</span>
+            <span class="badge text-bg-secondary">shadow-sm</span>
+        </p>
+    </footer>
+
+</div>
+<!-- CONTENIDO PARA MOODLE: copiar hasta aquí -->
+<script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
