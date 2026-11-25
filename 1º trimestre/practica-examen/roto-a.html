@@ -64,15 +64,17 @@
 
         // ===== CÓDIGO CON 3 ERRORES =====
         let generoActivo = "Todos";
-
+        
         const contGeneros = document.querySelector(".generos");
         const botonesGenero = contGeneros.querySelectorAll("button");
         const cartelera = document.querySelector(".cartelera");
         const cantidad = document.querySelector(".cantidad");
         const total = document.querySelector(".total");
+        
 
         function obtenerVisibles() {
             if (generoActivo !== "Todos") {
+                //Error 1: se está modificando el array original porque se asigna sobre el array películas, en vez de una copia, habría que usar otra variable que tuviese una copia
                 peliculas = peliculas.filter(pelicula => pelicula.genero === generoActivo);
             }
             return peliculas;
@@ -80,6 +82,7 @@
 
         function renderizar() {
             const visibles = obtenerVisibles();
+            
 
             botonesGenero.forEach(boton => {
                 if (boton.textContent === generoActivo) {
@@ -106,6 +109,7 @@
             cantidad.textContent = visibles.length;
             total.textContent = `${minutos} min`;
 
+            //Error 2: este evento está dentro de renderizar por lo tanto en cada llamada está asignando todo el rato
             contGeneros.addEventListener("click", (event) => {
                 const boton = event.target.closest("button");
 
@@ -116,6 +120,7 @@
                 renderizar();
             });
         }
+        //Error 3: no se está llamando a renderizar por tanto no se ve nada
     </script>
 </body>
 </html>

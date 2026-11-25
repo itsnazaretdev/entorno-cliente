@@ -160,6 +160,7 @@
       const total = document.querySelector(".total");
       const cantidad = document.querySelector(".cantidad");
       //------------------------------A.2-------------------------------
+      //Decisión: esta función va a devolver un array filtrado que según el género que esté activo, tendremos las películas de ese género, esta función se llamará en renderizar más tarde
       function obtenerVisibles() {
         if (generoActivo !== "Todos") {
           visibles = peliculas.filter((pelicula) => pelicula.genero === generoActivo);
@@ -169,6 +170,7 @@
       }
 
       //------------------------------A.1--------------------------------
+      //Decisión: uso de forEach para iterar cada pelicula y poder imprimirla, desestructuración para que sea más fácil ver las claves, se crea un li por cada pelicula y se añade a la lista cartelera. Además se hace otro forEach para detectar los botones y añadirle la clase activo o quitarla
       function renderizar() {
         obtenerVisibles();
 
@@ -194,6 +196,8 @@
           }
         });
 
+        //------------------------------A.4-------------------------------
+        //Decisión: uso de reduce para sumar todas las cantidades de la duración y añadirlo a su respectiva p, después con lenght vemos cuántos elementos hay en total en cada parte, en los botones y en total
         let maraton = peliculas.reduce((acc, pelicula) => acc + pelicula.duracion, 0);
         total.textContent = `${maraton} min`;
 
@@ -202,6 +206,7 @@
       }
 
       //------------------------------A.3-------------------------------
+      //Decisión: para renderizar según el botón que se clica, con un evento y buscando por el elemento más cercano del contenedor, así que según el género que está activo comparando con el texto del botón, cuando coincide, renderizamos
       const generos = document.querySelector(".generos");
 
       generos.addEventListener("click", (e) => {
