@@ -186,9 +186,9 @@
 
       let tipoActivo = "Todos";
       let seleccionado = null; // el plato elegido (objeto), o null si todavía no hay
-      let platosCopia = platos
+      let platosCopia = platos;
 
-       function obtenerFiltrado() {
+      function obtenerFiltrado() {
         if (tipoActivo !== "Todos") {
           platosCopia = platos.filter((plato) => plato.tipo === tipoActivo);
         } else {
@@ -200,65 +200,99 @@
       //Decisión: función renderizar para ver los platos en un li para cada uno con forEach
 
       const ulMenu = document.querySelector(".menu");
-      let platosTotal = document.querySelector(".cantidad")
-      let unoDeCada = document.querySelector(".total")
-      const botones = document.querySelector
+      let platosTotal = document.querySelector(".cantidad");
+      let unoDeCada = document.querySelector(".total");
+      const botones = document.querySelectorAll(".tipos button");
+      const detallePrecio = document.querySelector(".detalle-precio");
+      const detalleDescripcion = document.querySelector(".detalle-descripcion")
+      const detalleEmoji = document.querySelector(".detalle-emoji")
+      const detalleNombre = document.querySelector(".detalle-nombre")
 
       function renderizar() {
-        obtenerFiltrado()
 
-        ulMenu.innerHTML = ""
+        obtenerFiltrado();
 
-        platosCopia.forEach(plato => {
-            const liMenu = document.createElement("li");
+        ulMenu.innerHTML = "";
 
-            liMenu.innerHTML = `
+        platosCopia.forEach((plato) => {
+          const liMenu = document.createElement("li");
+
+          liMenu.innerHTML = `
                 <span class="emoji">${plato.emoji}</span>
-                <span class="titulo">${plato.nombre}</span>
-                <span class="genero">${plato.tipo}</span>
-                <span class="duracion">${plato.precio} €</span>
+                <span class="nombre">${plato.nombre}</span>
+                <span class="tipo">${plato.tipo}</span>
+                <span class="precio">${plato.precio} €</span>
             `;
-            ulMenu.appendChild(liMenu)
+          ulMenu.appendChild(liMenu);
 
-            // if (plato[i] === seleccionado) {
-            //     liMenu.classList.add("seleccionado")
-            // } else {
-            //     liMenu.classList.remove("seleccionado")
-            // }
-        })
+          if (plato === seleccionado) {
+              liMenu.classList.add("seleccionado")
+          } else {
+              liMenu.classList.remove("seleccionado")
+          }
+        });
+
+        botones.forEach((botonUnico) => {
+          if (botonUnico.textContent === tipoActivo) {
+            botonUnico.classList.add("activo");
+          } else {
+            botonUnico.classList.remove("activo");
+          }
+        });
 
         //------------------------------B.4-------------------------------
         //Decisión: uso de lenght para ver cuánto es la longitud de la lista que se está renderizando y reduce para calcular el precio total de todos los que hay en la lista
         let platosCount = platosCopia.length;
         platosTotal.textContent = platosCount;
 
-        let unoDeCadaTotal = platosCopia.reduce((acc, plato) => acc + plato.precio, 0)
-        unoDeCada.textContent = `${unoDeCadaTotal} €`
-        
+        let unoDeCadaTotal = platosCopia.reduce((acc, plato) => acc + plato.precio, 0);
+        unoDeCada.textContent = `${unoDeCadaTotal} €`;
+
+        if (seleccionado !== null) {
+          detalleEmoji.textContent = seleccionado.emoji
+          detalleNombre.textContent = seleccionado.nombre
+          detalleDescripcion.textContent = seleccionado.descripcion
+          detallePrecio.textContent = `${seleccionado.precio} €`
+        } else {
+          detalleEmoji.textContent = '🍽️'
+          detalleNombre.textContent = 'Elegí un plato'
+          detalleDescripcion.textContent = 'Hacé clic en un plato de la carta para ver el detalle.'
+          detallePrecio.textContent = ''
+        }
 
       }
 
       //------------------------------B.2-------------------------------
-      //Decisión: usar filter para sacar un array con los platos que según el botón clicado, renderice exactamente esos, uso la función de obetener filtrado arriba para que según el tipo renderice o no
-      const divBotones = document.querySelector(".tipos")
+      //Decisión: usar filter para sacar un array con los platos que según el botón clicado, renderice exactamente esos, se usa en la función de obetener filtrado arriba para que según el tipo renderice o no, uso de closest para saber cuál de todos los botones se clicó
+      const divBotones = document.querySelector(".tipos");
 
       divBotones.addEventListener("click", (e) => {
-        const boton = e.target.closest("button")
-        const filtrado = platosCopia.filter(copia => copia.tipo === tipoActivo)
-        
+        const boton = e.target.closest("button");
+
         if (boton === null) return;
 
-        tipoActivo = boton.textContent
+        tipoActivo = boton.textContent;
+
+        renderizar();
+      });
+
+      //------------------------------B.3-------------------------------
+      //Decisión: al poner el evento en el menú hacemos delegación de eventos en vez de poner un evento por cada li, y uso de find para encontrar exactamente el plato que nos llega desde nombrePlato
+      ulMenu.addEventListener("click", (e) => {
+        const li = e.target.closest("li")
+        if (li === null) return
         
+        const nombrePlato = li.querySelector(".nombre").textContent 
+        
+        
+        let plato = platos.find(plato => plato.nombre === nombrePlato)
+
+        seleccionado = plato 
         renderizar()
+        
       })
 
-     
-
-
-
-      renderizar()
-
+      renderizar();
     </script>
   </body>
 </html>
